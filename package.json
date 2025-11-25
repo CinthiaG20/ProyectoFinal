@@ -1,0 +1,12 @@
+{
+  "description": "DWYM Project - Semester 2, 2025",
+  "license": "UNLICENSED",
+  "name": "dwym-project-2025sem2",
+  "private": true,
+  "workspaces": [
+    "packages/api",
+    "packages/mobile",
+    "packages/web"
+  ],
+  "version": "0.1.0"
+}
