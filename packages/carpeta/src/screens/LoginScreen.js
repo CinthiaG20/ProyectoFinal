@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { logout, useLogin } from "../api";
+import { getUser, logout, useLogin } from "../api";
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,7 +49,13 @@ export default function LoginScreen() {
         
         <TouchableOpacity
                   style={[styles.testButton, loading && { opacity: 0.7 }]}
-                  //onPress={fillTestCredentials}
+                  onPress={logout}
+                  disabled={loading}
+                  activeOpacity={0.7}
+                ></TouchableOpacity>
+          <TouchableOpacity
+                  style={[styles.testButton, loading && { opacity: 0.7 }]}
+                  onPress={getUser}
                   disabled={loading}
                   activeOpacity={0.7}
                 ></TouchableOpacity>
@@ -57,7 +63,7 @@ export default function LoginScreen() {
             {loading ? 'Ingresando con credenciales de prueba...' : 'Usar credenciales de prueba'}
           </Text>
       
-      <TouchableOpacity onPress={logout} style={[styles.testButton, loading && { opacity: 0.7 }]}>logout</TouchableOpacity>
+      
       </View>
     </View>
   );
