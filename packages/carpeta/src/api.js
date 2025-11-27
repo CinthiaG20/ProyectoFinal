@@ -20,7 +20,7 @@ const requestOptions = {
 
 fetch(`http://localhost:3000/api/login?email=${email}`, requestOptions)
   .then((response) => response.json())
-  .then((result) =>{token = result.token;id=result.userId;console.log(result.token)
+  .then((result) =>{token = result.token;id=result.userId;//console.log(result.token)
   })
   .catch((error) => console.error(error));
 }
@@ -103,11 +103,14 @@ fetch("http://localhost:3000/api/tournaments", requestOptions)
 export function borrarTorneo(id){
 const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Authorization", "Bearer " + token);
+myHeaders.append("Authorization", "Bearer "+token);
+
+const raw = "";
 
 const requestOptions = {
   method: "DELETE",
   headers: myHeaders,
+  body: raw,
   redirect: "follow"
 };
 
@@ -115,5 +118,5 @@ fetch(`http://localhost:3000/api/tournaments/${id}?=`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
-}
 
+}

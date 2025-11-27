@@ -8,7 +8,7 @@ export default function LoginScreen() {
   const [ description, setDescription]=useState("")
   const [ beginning, setBeginning]=useState("")
   const [ ending, setEnding]=useState("")
-
+  const [id,setId]=useState("")
 
   const handleLogin= async ()=> useLogin(email,password)
   return (
@@ -70,6 +70,14 @@ export default function LoginScreen() {
           placeholder="fin"
           placeholderTextColor="#6b7280"
         />
+        <TextInput
+          style={styles.input}
+          autoCapitalize="none"
+          value={id}
+          onChangeText={setId}
+          placeholder="fin"
+          placeholderTextColor="#6b7280"
+        />
         <TouchableOpacity
   style={styles.button}
   onPress={handleLogin}
@@ -100,7 +108,7 @@ export default function LoginScreen() {
 
 <TouchableOpacity
   style={styles.button}
-  onPress={() => borrarTorneo("1643d123-98a6-4050-90ad-f1c76d1fc071")}
+  onPress={() => borrarTorneo(id)}
 >
   <Text>Borrar torneo</Text>
 </TouchableOpacity>
