@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { getUser, logout, useLogin } from "../api";
+import { borrarTorneo, crearTorneo, listaTorneos, logout, useLogin } from "../api";
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [ name, setName]=useState("")
+  const [ description, setDescription]=useState("")
+  const [ beginning, setBeginning]=useState("")
+  const [ ending, setEnding]=useState("")
+
 
   const handleLogin= async ()=> useLogin(email,password)
   return (
@@ -34,39 +37,77 @@ export default function LoginScreen() {
           placeholder="••••••••"
           placeholderTextColor="#6b7280"
         />
-        
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-        
+         
+        <TextInput
+          style={styles.input}
+          autoCapitalize="none"
+          value={name}
+          onChangeText={setName}
+          placeholder="nombre"
+          placeholderTextColor="#6b7280"
+        />
+        <TextInput
+          style={styles.input}
+          autoCapitalize="none"
+          value={description}
+          onChangeText={setDescription}
+          placeholder="descripcion"
+          placeholderTextColor="#6b7280"
+        />
+        <TextInput
+          style={styles.input}
+          autoCapitalize="none"
+          value={beginning}
+          onChangeText={setBeginning}
+          placeholder="inicio"
+          placeholderTextColor="#6b7280"
+        />
+        <TextInput
+          style={styles.input}
+          autoCapitalize="none"
+          value={ending}
+          onChangeText={setEnding}
+          placeholder="fin"
+          placeholderTextColor="#6b7280"
+        />
         <TouchableOpacity
-          style={[styles.button, loading && { opacity: 0.7 }]}
-          onPress={handleLogin}
-          disabled={loading}
-        >
-          <Text style={styles.buttonText}>
-            {loading ? 'Ingresando...' : 'Ingresar'}
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-                  style={[styles.testButton, loading && { opacity: 0.7 }]}
-                  onPress={logout}
-                  disabled={loading}
-                  activeOpacity={0.7}
-                ></TouchableOpacity>
-          <TouchableOpacity
-                  style={[styles.testButton, loading && { opacity: 0.7 }]}
-                  onPress={getUser}
-                  disabled={loading}
-                  activeOpacity={0.7}
-                ></TouchableOpacity>
-          <Text style={styles.testButtonText}>
-            {loading ? 'Ingresando con credenciales de prueba...' : 'Usar credenciales de prueba'}
-          </Text>
-      
-      
+  style={styles.button}
+  onPress={handleLogin}
+>
+  <Text>Login</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.button}
+  onPress={logout}
+>
+  <Text>Logout</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.button}
+  onPress={() => crearTorneo(name, description, beginning, ending)}
+>
+  <Text>Crear torneo</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.button}
+  onPress={listaTorneos}
+>
+  <Text>Listar torneos</Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.button}
+  onPress={() => borrarTorneo("1643d123-98a6-4050-90ad-f1c76d1fc071")}
+>
+  <Text>Borrar torneo</Text>
+</TouchableOpacity>
+
       </View>
     </View>
-  );
+  );//07f3a466-45d9-4008-b59b-632a7f315af8
 }
 
 const styles = StyleSheet.create({
