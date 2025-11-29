@@ -154,6 +154,7 @@ interface Match extends Entity {
 interface Team extends Entity {
   title: string;
   description: string;
+  logo: string | null; // URL a la imagen del logo.
 }
 
 interface Invitation extends Entity {
@@ -177,6 +178,24 @@ interface Ranking {
   points: number;
 }
 ```
+
+### Sistema de Puntuación
+
+Los puntos se calculan para cada pronóstico (_gamble_) que un usuario realiza sobre un partido, comparando su predicción con el resultado real del partido:
+
+- **5 puntos** - Resultado exacto: El pronóstico coincide exactamente con el marcador del partido.
+  - Ejemplo: Pronosticaste 2-1, el partido terminó 2-1 ✓
+
+- **3 puntos** - Diferencia de goles: El pronóstico coincide con la diferencia de goles del partido.
+  - Ejemplo: Pronosticaste 3-1 (diferencia de +2), el partido terminó 2-0 (también +2) ✓
+
+- **1 punto** - Resultado (victoria/empate/derrota): El pronóstico acierta el resultado del partido (qué equipo gana o si hay empate).
+  - Ejemplo: Pronosticaste 1-0 (victoria local), el partido terminó 2-1 (también victoria local) ✓
+
+- **0 puntos** - Pronóstico incorrecto: El pronóstico no cumple ninguno de los criterios anteriores.
+  - Ejemplo: Pronosticaste 1-0 (victoria local), el partido terminó 0-2 (victoria visitante) ✗
+
+El ranking de un torneo se calcula sumando los puntos obtenidos en todos los pronósticos de partidos finalizados de ese torneo. Los usuarios se ordenan de mayor a menor puntaje, y aquellos con el mismo puntaje comparten la misma posición en el ranking.
 
 ## Anexo 2: API REST
 
@@ -202,6 +221,10 @@ Tanto los cuerpos de peticiones como los de las respuestas usarán JSON como for
   - Respuesta OK 200 `Gamble[]`
 + `GET /api/me/tournaments/:id/ranking`: Obtener el ranking de puntos de todos los usuarios en un torneo.
   - Respuesta OK 200 `Ranking[]`
++ `GET /api/me/tournaments/:id/my-ranking`: Obtener el ranking y puntos del usuario actual en un torneo específico.
+  - Respuesta OK 200 `Ranking` (con `{ user, rank, points }`)
++ `GET /api/me/matches/:matchId/gamble`: Obtener el pronóstico del usuario actual para un partido específico, incluyendo puntos obtenidos si el partido ha finalizado.
+  - Respuesta OK 200 `GambleWithPoints` (con `{ ...Gamble, points?, matchEnded }`)
 + `GET /api/me/gambles`: Listar todos los pronósticos realizados por el usuario actual.
   - Respuesta OK 200 `Gamble[]`
 + `GET /api/me/gambles/:id`: Obtener un pronóstico específico del usuario actual.
@@ -222,15 +245,23 @@ Tanto los cuerpos de peticiones como los de las respuestas usarán JSON como for
   - Respuesta OK 200 `Invitation`
 - `POST /api/me/invitations/:id/reject`: Rechazar una invitación a un torneo.
   - Respuesta OK 200 `Invitation`
-
-### Managers
-
-- `GET /api/tournaments`: Listar todos los torneos.
++ `GET /api/tournaments`: Listar todos los torneos.
   - Respuesta OK 200 `Tournament[]`
 + `GET /api/tournaments/:id`: Obtener información de un torneo específico.
   - Respuesta OK 200 `Tournament`
 + `GET /api/tournaments/:id/matches`: Listar partidos de un torneo.
   - Respuesta OK 200 `Match[]`
++ `GET /api/teams`: Listar todos los equipos.
+  - Respuesta OK 200 `Team[]`
++ `GET /api/teams/:id`: Obtener información de un equipo específico.
+  - Respuesta OK 200 `Team`
++ `GET /api/matches`: Listar todos los partidos.
+  - Respuesta OK 200 `Match[]`
++ `GET /api/matches/:id`: Obtener información de un partido específico.
+  - Respuesta OK 200 `Match`
+
+### Managers
+
 + `PUT /api/tournaments`: Crear un torneo.
   - Cuerpo `{ name: string, description: string, beginning: Date, ending: Date }`
   - Respuesta OK 201 `Tournament`
@@ -239,22 +270,14 @@ Tanto los cuerpos de peticiones como los de las respuestas usarán JSON como for
   - Respuesta OK 200 `{ updated: number }`
 + `DELETE /api/tournaments/:id`: Eliminar un torneo.
   - Respuesta OK 200 `{ deleted: number }`
-+ `GET /api/teams`: Listar todos los equipos.
-  - Respuesta OK 200 `Team[]`
-+ `GET /api/teams/:id`: Obtener información de un equipo específico.
-  - Respuesta OK 200 `Team`
 + `PUT /api/teams`: Crear un equipo.
-  - Cuerpo `{ title: string, description: string }`
+  - Cuerpo `{ title: string, description: string, logo: string | null }`
   - Respuesta OK 201 `Team`
 + `PATCH /api/teams/:id`: Modificar un equipo.
-  - Cuerpo `{ title?: string, description?: string }`
+  - Cuerpo `{ title?: string, description?: string, logo?: string | null }`
   - Respuesta OK 200 `{ updated: number }`
 + `DELETE /api/teams/:id`: Eliminar un equipo.
   - Respuesta OK 200 `{ deleted: number }`
-+ `GET /api/matches`: Listar todos los partidos.
-  - Respuesta OK 200 `Match[]`
-+ `GET /api/matches/:id`: Obtener información de un partido específico.
-  - Respuesta OK 200 `Match`
 + `PUT /api/matches`: Crear un partido.
   - Cuerpo `{ title: string, date: Date, tournament: Tournament['id'], homeTeam: Team['id'], awayTeam: Team['id'] }`
   - Respuesta OK 201 `Match`

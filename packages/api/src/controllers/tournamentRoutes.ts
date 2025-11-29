@@ -10,7 +10,11 @@ import {
 } from "./routerUtils";
 
 export default function tournamentRoutes(router: Router, tournamentService: TournamentService, userService: UserService) {
-  const { ensureGamblerUser, ensureManagerUser } = createAuthMiddleware(userService);
+  const {
+    ensureGamblerUser,
+    ensureManagerUser,
+  } = createAuthMiddleware(userService);
+
   router.put("/tournaments",
     validateBody(tournamentSchema.pick({ name: true, description: true, beginning: true, ending: true })),
     ensureApiKey,
@@ -29,7 +33,7 @@ export default function tournamentRoutes(router: Router, tournamentService: Tour
   router.get("/tournaments",
     validateQuery(tournamentSchema.partial()),
     ensureApiKey,
-    ensureManagerUser,
+    ensureGamblerUser,
     async (_req: Request, res: Response) => {
       const { apiKey, parsedQuery } = res.locals;
       try {
@@ -44,7 +48,7 @@ export default function tournamentRoutes(router: Router, tournamentService: Tour
   router.get("/tournaments/:id",
     ensureParamId,
     ensureApiKey,
-    ensureManagerUser,
+    ensureGamblerUser,
     async (_req: Request, res: Response) => {
       const { apiKey, id } = res.locals;
       try {
@@ -59,7 +63,7 @@ export default function tournamentRoutes(router: Router, tournamentService: Tour
   router.get("/tournaments/:id/matches",
     ensureParamId,
     ensureApiKey,
-    ensureManagerUser,
+    ensureGamblerUser,
     async (_req: Request, res: Response) => {
       const { apiKey, id } = res.locals;
       try {

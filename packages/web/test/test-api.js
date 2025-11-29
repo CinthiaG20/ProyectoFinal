@@ -1,5 +1,9 @@
 import nodePath from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { runServer } from '../../api/src/Server';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = nodePath.dirname(__filename);
 
 export class ApiError extends Error {
   constructor(message, options = {}) {
@@ -20,6 +24,7 @@ export default function testApi(config) {
     dbKey = 'test-db',
     deleteFilesOnClose = true,
   } = config ?? {};
+  console.log(`Starting test API.`);
   let appServer;
   runServer({
     dbFolder,

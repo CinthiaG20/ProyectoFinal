@@ -3,6 +3,9 @@
   "license": "UNLICENSED",
   "name": "dwym-project-2025sem2",
   "private": true,
+  "scripts": {
+    "docs:gen": "pandoc docs/DWYM-Proyecto-2025sem2.md -s -o docs/DWYM-Proyecto-2025sem2.pdf"
+  },
   "workspaces": [
     "packages/api",
     "packages/mobile",

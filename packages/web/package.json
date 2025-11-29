@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
+    "msw": "^2.12.3",
     "prettier": "^3.6.2",
     "vite": "^7.1.7"
   }

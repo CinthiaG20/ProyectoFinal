@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Backend } from '../api/Backend';
 
-export const backend = new Backend({ apiKey: 'test-db' }); // FIXME: Use proper API key.
+export const backend = new Backend({
+  apiKey: import.meta.env.VITE_API_KEY ?? 'test-db',
+});
 
 export function useApiLogin(email, password) {
   const [data, setData] = useState(null);

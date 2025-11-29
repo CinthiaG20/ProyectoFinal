@@ -49,4 +49,40 @@ describe('Match Service', async () => {
     await apiClient.fetchOK(`${apiMatches}/${createdMatch.id}`, { method: 'DELETE' });
     await apiClient.fetchFail(`${apiMatches}/${createdMatch.id}`, {}, 404);
   });
+
+  test('a gambler user can access GET endpoints for matches', async () => {
+    const managerClient = new TestApiClient({ apiKey: TEST_DB_KEY });
+    await managerClient.login('manager@example.com', 'manager');
+
+    const tournaments = await managerClient.fetchOK(apiTournaments) as Tournament[];
+    expect(tournaments.length).toBeGreaterThan(0);
+    const teams = await managerClient.fetchOK(apiTeams) as Team[];
+    expect(teams.length).toBeGreaterThan(1);
+
+    const matchData = {
+      title: 'Gambler Test Match',
+      date: new Date().toISOString(),
+      tournament: tournaments[0].id,
+      homeTeam: teams[0].id,
+      awayTeam: teams[1].id,
+      homeScore: null,
+      awayScore: null,
+    };
+
+    const createdMatch = await managerClient.create(apiMatches, {
+      body: matchData,
+    });
+
+    const gamblerClient = new TestApiClient({ apiKey: TEST_DB_KEY });
+    await gamblerClient.login('gambler@example.com', 'gambler');
+
+    const matches = await gamblerClient.fetchOK(apiMatches);
+    expect(Array.isArray(matches)).toBe(true);
+    expect(matches.length).toBeGreaterThan(0);
+
+    const fetchedMatch = await gamblerClient.fetchOK(`${apiMatches}/${createdMatch.id}`);
+    expect(fetchedMatch).toEqual(createdMatch);
+
+    await managerClient.fetchOK(`${apiMatches}/${createdMatch.id}`, { method: 'DELETE' });
+  });
 });
