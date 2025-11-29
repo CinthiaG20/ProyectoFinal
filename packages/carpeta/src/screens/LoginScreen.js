@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { borrarTorneo, crearTorneo, listaTorneos, logout, useLogin } from "../api";
+import { borrarTorneo, crearTorneo, listaTorneos, logout, MyTournaments, useLogin } from "../api";
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,7 +75,7 @@ export default function LoginScreen() {
           autoCapitalize="none"
           value={id}
           onChangeText={setId}
-          placeholder="fin"
+          placeholder="id para borrar"
           placeholderTextColor="#6b7280"
         />
         <TouchableOpacity
@@ -112,7 +112,12 @@ export default function LoginScreen() {
 >
   <Text>Borrar torneo</Text>
 </TouchableOpacity>
-
+<TouchableOpacity
+  style={styles.button}
+  onPress={() => MyTournaments()}
+>
+  <Text>listar mis torneos</Text>
+</TouchableOpacity>
       </View>
     </View>
   );//07f3a466-45d9-4008-b59b-632a7f315af8
