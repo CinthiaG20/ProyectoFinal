@@ -31,6 +31,9 @@
       "eas": {
         "projectId": "pencas-mobile-placeholder"
       }
-    }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
   }
 }
