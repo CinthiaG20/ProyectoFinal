@@ -120,7 +120,7 @@ fetch(`http://localhost:3000/api/tournaments/${id}?=`, requestOptions)
   .catch((error) => console.error(error));
 
 }
-export function MyTournaments(){
+export function misTorneos(){
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -154,7 +154,7 @@ fetch(`http://localhost:3000/api/me/tournaments/${idTorneo}/matches`, requestOpt
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
 
-export function listarPronosticos(idTorneo){
+export function listarPronosticosTorneo(idTorneo){
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -314,3 +314,252 @@ fetch("http://localhost:3000/api/matches/74755dac-b1ee-4d4b-a83b-db6b4ba01c6b/re
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
   }
+
+  export function listarPronosticos(){
+    const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/me/gambles", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+  }
+  export function crear_actualizarPronostico(usuario,match,homeScore,awayScore){
+    const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const raw = JSON.stringify({
+  "user": usuario,
+  "match": match,
+  "homeScore": homeScore,
+  "awayScore": awayScore
+});
+
+const requestOptions = {
+  method: "PUT",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/me/gambles", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+  }
+
+  export function borrarPronostico(id){
+    const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+
+const requestOptions = {
+  method: "DELETE",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch(`http://localhost:3000/api/me/gambles/${id}`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+  }
+  export function listarMisInvitaciones(){
+    const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/me/invitations", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+  }
+export function listarInvitaciones(){
+   const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/invitations", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
+
+export function crearInvitacion(email,idTorneo){const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const raw = JSON.stringify({
+  "invitedGambler": email,
+  "tournament": idTorneo
+});
+
+const requestOptions = {
+  method: "PUT",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/invitations", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));}
+export function eliminarInvitacion(id){
+  const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+
+const requestOptions = {
+  method: "DELETE",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch(`http://localhost:3000/api/invitations/${id}`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
+export function aceptarInvitacion(idTorneo,idInvitacion){
+  const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const raw = JSON.stringify({
+  "invitedGambler": email,
+  "tournament": idTorneo
+});
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch(`http://localhost:3000 /api/me/invitations/${idInvitacion}/accept`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
+export function rechazarInvitacion(idTorneo,idInvitacion){
+  const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const raw = JSON.stringify({
+  "invitedGambler": email,
+  "tournament": idTorneo
+});
+
+const requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch(`http://localhost:3000 /api/me/invitations/${idInvitacion}/reject`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
+export function listarUsuarios(){
+  const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const requestOptions = {
+  method: "GET",
+  headers: myHeaders,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/users", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
+
+export function crearUsuario(){
+  const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer "+token);
+
+const raw = JSON.stringify({
+  "email": email,
+  "password": pssword,
+  "role": role
+});
+
+const requestOptions = {
+  method: "PUT",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch("http://localhost:3000/api/users", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
+
+export function borrarUsuario(email,pssword,role,id){
+  const myHeaders = new Headers();
+myHeaders.append("x-api-key", "default-db");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2MTg0MjBiZi0wNTVlLTRhMmMtYmRlZS1iZTgzOTA0OTFiOGYiLCJ0b2tlblZlcnNpb24iOjgsImlhdCI6MTc2NDQ0NzI3MCwiZXhwIjoxNzY0NDU4MDcwfQ.jSZM8XTjzyPgT-CSoqbyYOqNfb7oPEQGmQfZ6nMVqPA");
+
+const raw = JSON.stringify({
+  "email": email,
+  "password": pssword,
+  "role": role
+});
+
+const requestOptions = {
+  method: "DELETE",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch(`http://localhost:3000/api/users/${id}`, requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
+}
