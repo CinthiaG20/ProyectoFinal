@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getMyTournaments, getTournament, logout } from '../api';
+import { getMyTournaments, getTournament, logout } from '../api_Gamblers';
 import { useAuth } from '../auth/AuthContext';
 import { styles } from '../ui/Styles'; 
 

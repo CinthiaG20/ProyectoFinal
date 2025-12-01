@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { getInvitations, acceptInvitation, rejectInvitation } from '../api';
+import {  acceptInvitation, rejectInvitation } from '../api_Usuarios-Admins';
+import {listarInvitaciones} from '../api_Managers';
 import { styles } from '../ui/Styles'; 
 
 export default function InvitationsScreen() {
@@ -9,7 +10,7 @@ export default function InvitationsScreen() {
 
   const load = async () => {
     try {
-      const data = await getInvitations();
+      const data = await listarInvitaciones();
       setInvitations(data || []);
     } catch (e) {
       console.error('Error cargando invitaciones', e);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { getMyGambles, MyTournaments } from '../api';
+import { getMyGambles, MyTournaments } from '../api_Gamblers';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../ui/Styles'; 
 
@@ -26,7 +26,7 @@ export default function MyGamblesScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('TournamentsScreen')}
+          onPress={() => navigation.navigate('InvitationScreen')}
         >
           <Text>Mis invitaciones </Text>
         </TouchableOpacity>

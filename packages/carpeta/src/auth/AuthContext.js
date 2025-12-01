@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useContext } from 'react';
-import { token } from "../api";
+import { token } from "../api_Usuarios-Admins";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {

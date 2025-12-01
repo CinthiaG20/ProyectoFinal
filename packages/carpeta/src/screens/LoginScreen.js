@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { borrarTorneo, crearTorneo, listaTorneos, logout, MyTournaments, useLogin } from "../api";
+import { token, useLogin } from "../api_Usuarios-Admins";
 import { styles } from '../ui/Styles'; 
 
 // Importar useNavigation de React Navigation
