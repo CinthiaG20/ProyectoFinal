@@ -1,4 +1,3 @@
-
 export let token="";
 export let userId = "";
 
@@ -19,7 +18,7 @@ export function useLogin(email,pssword) {
     redirect: "follow"
 };
 
-fetch(`http://192.168.43.212:3000/api/login`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/login`, requestOptions)
 
 //fetch(`http://localhost:3000/api/login?email=${email}`, requestOptions)
  .then((response) => response.json())
@@ -27,6 +26,7 @@ fetch(`http://192.168.43.212:3000/api/login`, requestOptions)
   })
   .catch((error) => console.error(error));
 }
+
 export function logout(){
 const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
@@ -40,7 +40,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://192.168.43.212:3000/api/logout", requestOptions)
+return fetch("http://192.168.43.212:3000/api/logout", requestOptions)
 
 //fetch("http://localhost:3000/api/logout", requestOptions)
   .then((response) => response.text())
@@ -61,8 +61,7 @@ export function getUser() {
     redirect: "follow"
   };
 
-
-  fetch("http://192.168.43.212:3000/api/me", requestOptions)
+ return fetch("http://192.168.43.212:3000/api/me", requestOptions)
 
   //fetch("http://localhost:3000/api/me", requestOptions)
     .then((response) => response.json())
@@ -91,7 +90,7 @@ const requestOptions = {
   redirect: "follow"
 }; 
 
-fetch("http://192.168.43.212:3000/api/tournaments", requestOptions)
+return fetch("http://192.168.43.212:3000/api/tournaments", requestOptions)
 
 //fetch("http://localhost:3000/api/tournaments", requestOptions)
   .then((response) => response.text())
@@ -111,7 +110,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-  fetch("http://192.168.43.212:3000/api/tournaments", requestOptions)
+ return fetch("http://192.168.43.212:3000/api/tournaments", requestOptions)
 
 //fetch("http://localhost:3000/api/tournaments", requestOptions)
   .then((response) => response.text())
@@ -134,7 +133,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-  fetch(`http://192.168.43.212:3000/api/tournaments/${id}`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/tournaments/${id}`, requestOptions)
 
 //fetch(`http://localhost:3000/api/tournaments/${id}?=`, requestOptions)
   .then((response) => response.text())
@@ -156,7 +155,7 @@ export function MyTournaments(){
   redirect: "follow"
 };
 
-  fetch("http://192.168.43.212:3000/api/me/tournaments", requestOptions)
+return fetch("http://192.168.43.212:3000/api/me/tournaments", requestOptions)
 
 //fetch("http://localhost:3000/api/me/tournaments/", requestOptions)
   .then((response) => response.text())
@@ -165,7 +164,8 @@ export function MyTournaments(){
 }
 
 //###### Listar Partidos #################################
-export function ListarPrtidos(idTorneo){const myHeaders = new Headers();
+export function ListarPrtidos(idTorneo){
+const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
 
@@ -175,7 +175,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://192.168.43.212:3000/api/me/tournaments/${idTorneo}/matches`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/me/tournaments/${idTorneo}/matches`, requestOptions)
 
 //fetch(`http://localhost:3000/api/me/tournaments/${idTorneo}/matches`, requestOptions)
   .then((response) => response.text())
@@ -195,7 +195,7 @@ export function listarPronosticos(idTorneo){
   redirect: "follow"
 };
 
-fetch(`http://192.168.43.212:3000/api/me/tournaments/${idTorneo}/gambles`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/me/tournaments/${idTorneo}/gambles`, requestOptions)
 
 //fetch(`http://localhost:3000/api/me/tournaments/${idTorneo}/gambles`, requestOptions)
   .then((response) => response.text())
@@ -223,7 +223,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-  fetch("http://192.168.43.212:3000/api/teams", requestOptions)
+return fetch("http://192.168.43.212:3000/api/teams", requestOptions)
 
 //fetch("http://localhost:3000/api/teams", requestOptions)
   .then((response) => response.text())
@@ -238,14 +238,13 @@ export function listaEquipos(){
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer "+token);
 
-
 const requestOptions = {
   method: "GET",
   headers: myHeaders,
   redirect: "follow"
 };
 
-  fetch("http://192.168.43.212:3000/api/teams", requestOptions)
+return fetch("http://192.168.43.212:3000/api/teams", requestOptions)
 
 //fetch("http://localhost:3000/api/teams", requestOptions)
   .then((response) => response.text())
@@ -260,14 +259,13 @@ export function eliminarEquipo(idEquipo){
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer "+token);
 
-
   const requestOptions = {
   method: "DELETE",
   headers: myHeaders,
   redirect: "follow"
 };
 
-  fetch(`http://192.168.43.212:3000/api/teams/${idEquipo}`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/teams/${idEquipo}`, requestOptions)
 
 //fetch(`http://localhost:3000/api/teams/${idEquipo}`, requestOptions)
   .then((response) => response.text())
@@ -288,12 +286,13 @@ const requestOptions = {
   redirect: "follow"
 };
 
-  fetch("http://192.168.43.212:3000/api/matches", requestOptions)
+return fetch("http://192.168.43.212:3000/api/matches", requestOptions)
 
 //fetch("http://localhost:3000/api/matches", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
-  .catch((error) => console.error(error));}
+  .catch((error) => console.error(error));
+}
 
 // ######## Crear un partido ########
 export function crearPartido(title,date,idTorneo,idEquipo1,idEquipo2){
@@ -319,12 +318,13 @@ const requestOptions = {
   redirect: "follow"
 };
 
-  fetch("http://192.168.43.212:3000/api/matches", requestOptions)
+return fetch("http://192.168.43.212:3000/api/matches", requestOptions)
 
 //fetch("http://localhost:3000/api/matches", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
-  .catch((error) => console.error(error));}
+  .catch((error) => console.error(error));
+}
 
 //##### Borar partido por id #########
 export function borrarPartido(id){
@@ -339,7 +339,7 @@ export function borrarPartido(id){
   redirect: "follow"
 };
 
-  fetch(`http://192.168.43.212:3000/api/matches/${id}`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/matches/${id}`, requestOptions)
 
 //fetch(`http://localhost:3000/api/matches/${id}`, requestOptions)
   .then((response) => response.text())
@@ -364,7 +364,7 @@ export function subirResultado(){
   redirect: "follow"
 };
 
-fetch("http://192.168.43.212:3000/api/matches/74755dac-b1ee-4d4b-a83b-db6b4ba01c6b/results", requestOptions)
+return fetch("http://192.168.43.212:3000/api/matches/74755dac-b1ee-4d4b-a83b-db6b4ba01c6b/results", requestOptions)
 
 //fetch("http://localhost:3000/api/matches/74755dac-b1ee-4d4b-a83b-db6b4ba01c6b/results", requestOptions)
   .then((response) => response.text())

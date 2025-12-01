@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getMyTournaments } from '../api';
+import { getMyTournaments, getTournament } from '../api';
 import { useAuth } from '../auth/AuthContext';
+import { styles } from '../ui/Styles'; 
 
 export default function TournamentsScreen() {
   const [tournaments, setTournaments] = useState([]);
@@ -12,7 +13,7 @@ export default function TournamentsScreen() {
 
   const loadData = async () => {
     try {
-      const data = await getMyTournaments();
+      const data = await getTournament();
       setTournaments(data || []);
     } catch (e) {
       console.error('Error cargando torneos', e);
@@ -74,63 +75,3 @@ export default function TournamentsScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    backgroundColor: '#020617',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#e5e7eb',
-  },
-  logout: {
-    color: '#f97316',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  subtitle: {
-    fontSize: 13,
-    color: '#9ca3af',
-    marginBottom: 12,
-  },
-  card: {
-    backgroundColor: '#0f172a',
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#1f2937',
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#e5e7eb',
-  },
-  cardDesc: {
-    fontSize: 13,
-    color: '#9ca3af',
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  cardLink: {
-    fontSize: 13,
-    color: '#22c55e',
-    fontWeight: '500',
-  },
-  empty: {
-    color: '#9ca3af',
-    textAlign: 'center',
-    marginTop: 40,
-    fontSize: 14,
-  },
-});
