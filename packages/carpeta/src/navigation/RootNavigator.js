@@ -5,6 +5,7 @@ import LoginScreen from '../screens/LoginScreen';
 import MyGamblesScreen from '../screens/MyGamblesScreen'; 
 import TournamentsScreen from '../screens/TournamentsScreen';
 import InvitationsScreen from '../screens/InvitationsScreen';
+import PartidosScreen from '../screens/PartidosScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,11 @@ export default function RootNavigator() {
           name="InvitationScreen"  
           component={InvitationsScreen}
           options={{ title: 'Mis invitaciones' }}
+        />
+        <Stack.Screen 
+          name="PartidosScreen"  
+          component={PartidosScreen}
+          options={{ title: 'Mis partidos' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

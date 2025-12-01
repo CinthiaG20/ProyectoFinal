@@ -20,7 +20,7 @@ export default function MyGamblesScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => getGambleID()}
+          onPress={() => navigation.navigate('PartidosScreen')}
         >
           <Text>partidos a los que tiene acceso</Text>
         </TouchableOpacity>
