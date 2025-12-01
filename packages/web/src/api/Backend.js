@@ -1,33 +1,50 @@
 export class Backend {
   constructor(config) {
-    this.apiKey = config.apiKey;
-    if (!this.apiKey) {
-      throw new Error('API key is required');
-    }
+    this.apiKey = config.apiKey;           // puede ser un valor fijo
+    this.baseUrl = config.baseUrl ?? '';   // URL base del backend
+    this.sessionToken = null;
   }
-  
-  async fetch(url, options = {}) {
-    const {
-      method = 'GET',
-      body = null,
-      headers = {},
-    } = options;
 
-    const input = new URL(url, window.location.origin);
-    const request = await globalThis.fetch(input, {
+  setSessionToken(token) {
+    this.sessionToken = token || null;
+  }
+
+  async fetch(url, options = {}) {
+    const { method = 'GET', body = null, headers = {} } = options;
+
+    const input = new URL(url, this.baseUrl || window.location.origin);
+
+    const finalHeaders = {
+      'Content-Type': 'application/json',
+      'X-API-Key': this.apiKey,         // tu API no usa api key, pero debe existir
+      ...headers,
+    };
+
+    if (this.sessionToken) {
+      finalHeaders.Authorization = `Bearer ${this.sessionToken}`;
+    }
+
+    const response = await globalThis.fetch(input, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': this.apiKey,
-        ...headers,
-      },
+      headers: finalHeaders,
       body: body ? JSON.stringify(body) : null,
     });
-    if (!request.ok) {
-      throw new Error(`Request failure, ${request.status} ${request.statusText}.`);
-    } else {
-      return await request.json();
+
+    if (!response.ok) {
+      const message = `Request failure: ${response.status} ${response.statusText}`;
+      let error;
+      try {
+        const payload = await response.json();
+        error = new Error(payload.error || message);
+        error.payload = payload;
+      } catch {
+        error = new Error(message);
+      }
+      throw error;
     }
+
+    if (response.status === 204) return null;
+    return response.json();
   }
 
   async get(url, options = {}) {
