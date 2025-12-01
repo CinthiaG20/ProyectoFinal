@@ -312,8 +312,6 @@ export function rejectInvitation(idTorneo,idInvitacion){//por confirmar
       .catch((error) => console.error(error));
     }
 
-<<<<<<< HEAD:packages/carpeta/src/api_Gamblers.js
-
     */
 =======
 >>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/api_Gamblers.js
