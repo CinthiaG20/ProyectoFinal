@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { getMyGambles, MyTournaments } from '../api';
+import { Text, TouchableOpacity, View } from 'react-native';
+//import { getMyGambles, MyTournaments } from '../api';
 import { useNavigation } from '@react-navigation/native';
-import { styles } from '../ui/Styles'; 
+import { styles } from '../ui/Styles';
 
 export default function MyGamblesScreen() {
   

@@ -1,4 +1,4 @@
-import { token } from "./api_Usuarios-Admins";
+/*import { token } from "./api_Usuarios-Admins";
 
 export function MyTournaments(){
   const myHeaders = new Headers();
@@ -17,7 +17,6 @@ return fetch("http://192.168.43.212:3000/api/me/tournaments", requestOptions)  .
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 }
-<<<<<<< HEAD:packages/carpeta/src/api_Gamblers.js
 export function getMyMaches(idTorneo){const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -153,8 +152,8 @@ export function rejectInvitation(idTorneo,idInvitacion){//por confirmar
       .catch((error) => console.error(error));
     }
 
+ */
 
-/*
 import { token } from "./api_Usuarios-Admins";
 
 export function MyTournaments(){
@@ -175,8 +174,6 @@ return fetch("http://192.168.43.212:3000/api/me/tournaments", requestOptions)  .
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 }
-=======
->>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/api_Gamblers.js
 export function getGambleID(idTorneo){const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -312,6 +309,4 @@ export function rejectInvitation(idTorneo,idInvitacion){//por confirmar
       .catch((error) => console.error(error));
     }
 
-    */
-=======
->>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/api_Gamblers.js
+  

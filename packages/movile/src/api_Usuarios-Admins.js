@@ -1,16 +1,9 @@
 
-<<<<<<< HEAD:packages/carpeta/src/api_Usuarios-Admins.js
 export let token="";
 export let userId="";
 
 export function useLogin(email,pssword) {
   const myHeaders = new Headers();
-=======
-export let token=""
-
-export function useLogin(email,pssword) {
-    const myHeaders = new Headers();
->>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/api_Usuarios-Admins.js
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
 

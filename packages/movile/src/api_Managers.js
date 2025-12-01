@@ -243,18 +243,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-<<<<<<< HEAD:packages/carpeta/src/api_Managers.js
 return fetch("http://192.168.43.212:3000/api/invitations", requestOptions)
   .then((response) => response.text())
   .then((result) => {
       console.log("Invitaciones recibidas:", result);
       return result; 
     })
-=======
-fetch("http://192.168.43.212:3000/api/invitations", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
->>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/api_Managers.js
   .catch((error) => console.error(error));
 }
 export function crearInvitacion(email,idTorneo){//por confirmar
@@ -279,10 +273,7 @@ fetch("http://192.168.43.212:3000/invitations", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
-<<<<<<< HEAD:packages/carpeta/src/api_Managers.js
   
-=======
->>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/api_Managers.js
 export function eliminarInvitacion(id){//por confirmar
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");

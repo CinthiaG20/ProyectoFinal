@@ -1,15 +1,8 @@
-<<<<<<< HEAD:packages/carpeta/src/screens/InvitationsScreen.js
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import {  acceptInvitation, rejectInvitation } from '../api_Gamblers';
-import {listarInvitaciones} from '../api_Managers';
-import { styles } from '../ui/Styles'; 
-=======
 import { useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { acceptInvitation, getInvitations, rejectInvitation } from '../api';
+import { acceptInvitation, rejectInvitation } from '../api_Gamblers';
+import { listarInvitaciones } from '../api_Managers';
 import { styles } from '../ui/Styles';
->>>>>>> 46319f3e3c0dfa165b944232827ed78115ae6693:packages/movile/src/screens/InvitationsScreen.js
 
 export default function InvitationsScreen() {
   const [invitations, setInvitations] = useState([]);
