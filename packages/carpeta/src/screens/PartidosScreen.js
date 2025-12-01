@@ -17,6 +17,7 @@ export default function PartidosScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Mis partidos</Text>
+        <Text style={styles.title}>Mis shjsidiasd</Text>
         </View>
     </View>
   );
