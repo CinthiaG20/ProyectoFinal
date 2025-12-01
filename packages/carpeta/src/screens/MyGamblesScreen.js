@@ -24,6 +24,12 @@ export default function MyGamblesScreen() {
         >
           <Text>partidos a los que tiene acceso</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('TournamentsScreen')}
+        >
+          <Text>Mis invitaciones </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

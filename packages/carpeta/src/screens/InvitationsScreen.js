@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { getInvitations, acceptInvitation, rejectInvitation } from '../api';
+import { styles } from '../ui/Styles'; 
 
 export default function InvitationsScreen() {
   const [invitations, setInvitations] = useState([]);
@@ -102,71 +103,3 @@ export default function InvitationsScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#020617',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#e5e7eb',
-  },
-  subtitle: {
-    fontSize: 13,
-    color: '#9ca3af',
-    marginBottom: 10,
-  },
-  card: {
-    backgroundColor: '#0f172a',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#1f2937',
-  },
-  label: {
-    fontSize: 13,
-    color: '#e5e7eb',
-  },
-  info: {
-    fontSize: 12,
-    color: '#9ca3af',
-    marginTop: 2,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-    marginTop: 10,
-  },
-  btn: {
-    flex: 1,
-    paddingVertical: 8,
-    borderRadius: 999,
-    alignItems: 'center',
-  },
-  accept: {
-    backgroundColor: '#22c55e',
-  },
-  reject: {
-    backgroundColor: '#f97373',
-  },
-  btnText: {
-    color: '#0b1120',
-    fontWeight: '600',
-    fontSize: 13,
-  },
-  status: {
-    marginTop: 8,
-    fontSize: 13,
-    color: '#9ca3af',
-  },
-  empty: {
-    color: '#9ca3af',
-    marginTop: 40,
-    textAlign: 'center',
-  },
-});

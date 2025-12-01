@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getMyTournaments, getTournament } from '../api';
+import { getMyTournaments, getTournament, logout } from '../api';
 import { useAuth } from '../auth/AuthContext';
 import { styles } from '../ui/Styles'; 
 
@@ -10,6 +10,7 @@ export default function TournamentsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const { signOut } = useAuth();
+  
 
   const loadData = async () => {
     try {
@@ -46,12 +47,15 @@ export default function TournamentsScreen() {
       <Text style={styles.cardLink}>Ver partidos ➜</Text>
     </TouchableOpacity>
   );
-
+   const handleLogout= async ()=> {
+    await logout();
+    navigation.navigate('Login'); }
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Mis torneos</Text>
-        <TouchableOpacity onPress={signOut}>
+        <TouchableOpacity onPress={handleLogout}>
           <Text style={styles.logout}>Salir</Text>
         </TouchableOpacity>
       </View>
