@@ -18,7 +18,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/login?email=${email}`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/login`, requestOptions)
   .then((response) => response.json())
   .then((result) =>{token = result.token;id=result.userId;console.log(result.token)
   })
@@ -37,7 +37,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/logout", requestOptions)
+return fetch("http://192.168.43.212:3000/api/logout", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -54,7 +54,7 @@ export function getUser() {
     redirect: "follow"
   };
 
-  fetch("http://localhost:3000/api/me", requestOptions)
+  return fetch("http://192.168.43.212:3000/api/me", requestOptions)
     .then((response) => response.json())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
@@ -78,7 +78,7 @@ fetch("http://localhost:3000/api/users", requestOptions)
   .catch((error) => console.error(error));
 }
 
-export function crearUsuario(){
+export function crearUsuario(email,pssword,role){ //por confirmar
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -97,13 +97,13 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/users", requestOptions)
+fetch("http://192.168.43.212:3000/api/users", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 }
 
-export function borrarUsuario(email,pssword,role,id){
+export function borrarUsuario(id){ //por confirmar
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -122,7 +122,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/users/${id}`, requestOptions)
+fetch(`http://192.168.43.212:3000/api/users/${id}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));

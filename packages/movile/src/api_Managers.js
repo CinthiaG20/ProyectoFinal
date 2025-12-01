@@ -1,3 +1,4 @@
+import { token } from "./api_Usuarios-Admins";
 export function crearTorneo(nombre,desc,inicio,fin){
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
@@ -18,7 +19,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/tournaments", requestOptions)
+return fetch("http://192.168.43.212:3000/api/tournaments", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -34,7 +35,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/tournaments", requestOptions)
+return fetch("http://192.168.43.212:3000/api/tournaments", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -53,7 +54,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/tournaments/${id}?=`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/tournaments/${id}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -79,7 +80,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/teams", requestOptions)
+return fetch("http://192.168.43.212:3000/api/teams", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -97,7 +98,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/teams", requestOptions)
+return fetch("http://192.168.43.212:3000/api/teams", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -116,7 +117,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/teams/${idEquipo}`, requestOptions)
+return fetch(`http://192.168.43.212:3000/api/teams/${idEquipo}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -132,9 +133,8 @@ const requestOptions = {
   headers: myHeaders,
   redirect: "follow"
 };
-
-fetch("http://localhost:3000/api/matches", requestOptions)
-  .then((response) => response.text())
+return fetch("http://192.168.43.212:3000/api/matches", requestOptions)
+.then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
 
@@ -162,8 +162,8 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/matches", requestOptions)
-  .then((response) => response.text())
+return fetch("http://192.168.43.212:3000/api/matches", requestOptions)
+.then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
 
@@ -180,12 +180,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/matches/${id}`, requestOptions)
-  .then((response) => response.text())
+return fetch(`http://192.168.43.212:3000/api/matches/${id}`, requestOptions)
+ .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
   }
-      export function cargarResultadoPartido(id,homeScore,awayScore){
+export function cargarResultadoPartido(id,homeScore,awayScore){//por confirmar
         const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -203,12 +203,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/matches/${id}`, requestOptions)
+fetch(`http://192.168.43.212:3000/api/matches/${id}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
     }
-    export function BorrarResultadoPartido(id){
+export function BorrarResultadoPartido(id){ //por confirmar
         const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -226,12 +226,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/matches/${id}`, requestOptions)
+fetch(`http://192.168.43.212:3000/api/matches/${id}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
     }
-export function listarInvitaciones(){
+export function listarInvitaciones(){//por confirmar
    const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -243,13 +243,13 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/invitations", requestOptions)
+fetch("http://192.168.43.212:3000/api/invitations", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 }
-
-export function crearInvitacion(email,idTorneo){const myHeaders = new Headers();
+export function crearInvitacion(email,idTorneo){//por confirmar
+    const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -266,11 +266,11 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/invitations", requestOptions)
+fetch("http://192.168.43.212:3000/invitations", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
-export function eliminarInvitacion(id){
+export function eliminarInvitacion(id){//por confirmar
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -283,7 +283,7 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/invitations/${id}`, requestOptions)
+fetch(`http://192.168.43.212:3000/api/invitations/${id}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));

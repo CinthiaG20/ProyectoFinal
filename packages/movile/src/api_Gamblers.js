@@ -1,6 +1,6 @@
-import { token } from "./api";
+import { token } from "./api_Usuarios-Admins";
 
-export function misTorneos(){
+export function MyTournaments(){
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -13,13 +13,11 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/me/tournaments/", requestOptions)
-  .then((response) => response.text())
+return fetch("http://192.168.43.212:3000/api/me/tournaments", requestOptions)  .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 }
-
-export function ListarPrtidos(idTorneo){const myHeaders = new Headers();
+export function getGambleID(idTorneo){const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
 
@@ -28,13 +26,11 @@ const requestOptions = {
   headers: myHeaders,
   redirect: "follow"
 };
-
-fetch(`http://localhost:3000/api/me/tournaments/${idTorneo}/matches`, requestOptions)
-  .then((response) => response.text())
+return fetch(`http://192.168.43.212:3000/api/me/tournaments/${idTorneo}/matches`, requestOptions)
+.then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
-
-export function listarPronosticosTorneo(idTorneo){
+export function listarPronosticos(idTorneo){
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Authorization", "Bearer "+token);
@@ -44,30 +40,12 @@ const requestOptions = {
   headers: myHeaders,
   redirect: "follow"
 };
+return fetch(`http://192.168.43.212:3000/api/me/tournaments/${idTorneo}/gambles`, requestOptions)
 
-fetch(`http://localhost:3000/api/me/tournaments/${idTorneo}/gambles`, requestOptions)
-  .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
 }
-  export function listarPronosticos(){
-    const myHeaders = new Headers();
-myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer "+token);
-
-const requestOptions = {
-  method: "GET",
-  headers: myHeaders,
-  redirect: "follow"
-};
-
-fetch("http://localhost:3000/api/me/gambles", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
-  }
-  export function crear_actualizarPronostico(usuario,match,homeScore,awayScore){
+export function crear_actualizarPronostico(usuario,match,homeScore,awayScore){//por confirmar
     const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -87,13 +65,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://localhost:3000/api/me/gambles", requestOptions)
+fetch("http://192.168.43.212:3000/api/me/gambles", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
   }
-
-  export function borrarPronostico(id){
+export function borrarPronostico(id){//por confirmar
     const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
 myHeaders.append("Content-Type", "application/json");
@@ -106,12 +83,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch(`http://localhost:3000/api/me/gambles/${id}`, requestOptions)
+fetch(`http://192.168.43.212:3000/api/me/gambles/${id}`, requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
   }
-   export function listarMisInvitaciones(){
+export function getInvitations(){//por confirmar
       const myHeaders = new Headers();
   myHeaders.append("x-api-key", "default-db");
   myHeaders.append("Content-Type", "application/json");
@@ -123,12 +100,12 @@ fetch(`http://localhost:3000/api/me/gambles/${id}`, requestOptions)
     redirect: "follow"
   };
   
-  fetch("http://localhost:3000/api/me/invitations", requestOptions)
+  fetch("http://192.168.43.212:3000/api/me/invitations", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
     }
-    export function aceptarInvitacion(idTorneo,idInvitacion){
+export function acceptInvitation(idTorneo,idInvitacion){//por confirmar
       const myHeaders = new Headers();
     myHeaders.append("x-api-key", "default-db");
     myHeaders.append("Content-Type", "application/json");
@@ -146,12 +123,12 @@ fetch(`http://localhost:3000/api/me/gambles/${id}`, requestOptions)
       redirect: "follow"
     };
     
-    fetch(`http://localhost:3000 /api/me/invitations/${idInvitacion}/accept`, requestOptions)
+    fetch(`http://192.168.43.212:3000/api/me/invitations/${idInvitacion}/accept`, requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
     }
-    export function rechazarInvitacion(idTorneo,idInvitacion){
+export function rejectInvitation(idTorneo,idInvitacion){//por confirmar
       const myHeaders = new Headers();
     myHeaders.append("x-api-key", "default-db");
     myHeaders.append("Content-Type", "application/json");
@@ -169,7 +146,7 @@ fetch(`http://localhost:3000/api/me/gambles/${id}`, requestOptions)
       redirect: "follow"
     };
     
-    fetch(`http://localhost:3000/api/me/invitations/${idInvitacion}/reject`, requestOptions)
+    fetch(`hhttp://192.168.43.212:3000/api/me/invitations/${idInvitacion}/reject`, requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
