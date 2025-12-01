@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import {  acceptInvitation, rejectInvitation } from '../api_Usuarios-Admins';
+import {  acceptInvitation, rejectInvitation } from '../api_Gamblers';
 import {listarInvitaciones} from '../api_Managers';
 import { styles } from '../ui/Styles'; 
 

@@ -243,9 +243,12 @@ const requestOptions = {
   redirect: "follow"
 };
 
-fetch("http://192.168.43.212:3000/api/invitations", requestOptions)
+return fetch("http://192.168.43.212:3000/api/invitations", requestOptions)
   .then((response) => response.text())
-  .then((result) => console.log(result))
+  .then((result) => {
+      console.log("Invitaciones recibidas:", result);
+      return result; 
+    })
   .catch((error) => console.error(error));
 }
 export function crearInvitacion(email,idTorneo){//por confirmar
@@ -270,6 +273,7 @@ fetch("http://192.168.43.212:3000/invitations", requestOptions)
   .then((response) => response.text())
   .then((result) => console.log(result))
   .catch((error) => console.error(error));}
+  
 export function eliminarInvitacion(id){//por confirmar
   const myHeaders = new Headers();
 myHeaders.append("x-api-key", "default-db");
