@@ -25,7 +25,7 @@ export default function MyGamblesScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('TournamentsScreen')}
+          onPress={() => navigation.navigate('InvitationScreen')}
         >
           <Text>Mis invitaciones </Text>
         </TouchableOpacity>
