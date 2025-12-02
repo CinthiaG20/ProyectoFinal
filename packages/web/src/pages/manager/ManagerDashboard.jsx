@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ErrorMessage from '../../components/ui/ErrorMessage.jsx';
@@ -182,6 +183,13 @@ export default function ManagerDashboard() {
           </div>
         </section>
       </div>
+=======
+export default function ManagerDashboard() {
+  return (
+    <div>
+      <h1>Panel del Manager</h1>
+      <p>Desde aquí se gestionan torneos, equipos y partidos.</p>
+>>>>>>> main
     </div>
   );
 }

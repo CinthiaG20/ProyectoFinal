@@ -59,6 +59,7 @@ export default function MatchResultForm() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="page-header">
         <div>
           <h2 className="page-title">Cargar resultado</h2>
@@ -116,6 +117,44 @@ export default function MatchResultForm() {
             Cancelar
           </Link>
         </div>
+=======
+      <h2>Cargar resultado: {match.name}</h2>
+
+      <p>
+        <Link to="/manager/matches">← Volver</Link>
+      </p>
+
+      <ErrorMessage message={error} />
+
+      <form onSubmit={handleSubmit} style={{ maxWidth: '300px' }}>
+        <p>
+          {match.teamA?.name} vs {match.teamB?.name}
+        </p>
+
+        <label>
+          Goles {match.teamA?.name}
+          <input
+            type="number"
+            required
+            value={goalsA}
+            onChange={e => setGoalsA(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Goles {match.teamB?.name}
+          <input
+            type="number"
+            required
+            value={goalsB}
+            onChange={e => setGoalsB(e.target.value)}
+          />
+        </label>
+
+        <button disabled={submitting}>
+          {submitting ? 'Guardando…' : 'Guardar resultado'}
+        </button>
+>>>>>>> main
       </form>
     </div>
   );

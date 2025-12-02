@@ -26,15 +26,25 @@ export default function TournamentDetail() {
       setLoading(true);
       setError('');
       try {
+<<<<<<< HEAD
+=======
+        // Try to get tournament as "my tournament" (accepted access)
+>>>>>>> main
         try {
           const data = await getMyTournament(id);
           setTournament(data);
           setHasAccess(true);
+<<<<<<< HEAD
         } catch {
+=======
+        } catch (err) {
+          // If not present in my tournaments, try generic tournament info
+>>>>>>> main
           const data = await getTournament(id);
           setTournament(data);
           setHasAccess(false);
         }
+<<<<<<< HEAD
 
         try {
           const lb = await getLeaderboard(id);
@@ -48,6 +58,16 @@ export default function TournamentDetail() {
           if (me) setMyScore(me.points ?? 0);
         } catch {
           // Silently ignore leaderboard errors
+=======
+        // Also try to fetch leaderboard and user's score
+        try {
+          const lb = await getLeaderboard(id);
+          const rows = Array.isArray(lb) ? lb : lb.items ?? [];
+          const me = rows.find((r) => r.user === user?.userId || r.userId === user?.userId || r.userEmail === user?.email);
+          if (me) setMyScore(me.points ?? 0);
+        } catch (err) {
+          // ignore leaderboard errors here
+>>>>>>> main
         }
       } catch (e) {
         setError(e.message || 'Error al cargar torneo');
@@ -64,6 +84,7 @@ export default function TournamentDetail() {
     setError('');
     try {
       const invites = await listInvitations();
+<<<<<<< HEAD
       const list = Array.isArray(invites) ? invites : (invites.items ?? []);
       const myInvite = list.find(
         (i) => i.tournament === id && !i.acceptedAt && !i.revokedAt
@@ -93,6 +114,28 @@ export default function TournamentDetail() {
       }
     } catch (err) {
       setError(err?.message || 'Error al aceptar la invitacion');
+=======
+      const list = Array.isArray(invites) ? invites : invites.items ?? [];
+      const myInvite = list.find((i) => i.tournament === id && !i.acceptedAt && !i.revokedAt);
+      if (!myInvite) {
+        setError('No hay invitación pendiente para este torneo');
+        return;
+      }
+      await acceptInvitation(myInvite.id);
+      // After accepting, reload as myTournament
+      const data = await getMyTournament(id);
+      setTournament(data);
+      setHasAccess(true);
+      // Try to refresh leaderboard/scores
+      try {
+        const lb = await getLeaderboard(id);
+        const rows = Array.isArray(lb) ? lb : lb.items ?? [];
+        const me = rows.find((r) => r.user === user?.userId || r.userId === user?.userId || r.userEmail === user?.email);
+        if (me) setMyScore(me.points ?? 0);
+      } catch {}
+    } catch (err) {
+      setError(err?.message || 'Error al aceptar la invitación');
+>>>>>>> main
     } finally {
       setLoading(false);
     }
@@ -106,6 +149,7 @@ export default function TournamentDetail() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="page-header">
         <div>
           <h2 className="page-title">{tournament.name}</h2>
@@ -173,4 +217,65 @@ export default function TournamentDetail() {
       </div>
     </div>
   );
+=======
+      <h2>{tournament.name}</h2>
+      <p>{tournament.description}</p>
+      <p>
+        <strong>Fechas:</strong> {tournament.startDate} – {tournament.endDate}
+      </p>
+
+      <p>
+        <Link to="/gambler/tournaments">← Volver a mis torneos</Link>
+      </p>
+
+      <ul>
+        <li>
+          <Link to={`/gambler/tournaments/${tournament.id}/matches`}>
+            Ver partidos
+          </Link>
+        </li>
+        <li>
+          <Link to={`/gambler/tournaments/${tournament.id}/leaderboard`}>
+            Ver tabla de posiciones
+          </Link>
+        </li>
+        {typeof myScore === 'number' && (
+          <li>
+            <strong>Tu puntaje:</strong> {myScore}
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+
+  async function handleAcceptFromDetail() {
+    setLoading(true);
+    setError('');
+    try {
+      const invites = await listInvitations();
+      const list = Array.isArray(invites) ? invites : invites.items ?? [];
+      const myInvite = list.find((i) => i.tournament === id && !i.acceptedAt && !i.revokedAt);
+      if (!myInvite) {
+        setError('No hay invitación pendiente para este torneo');
+        return;
+      }
+      await acceptInvitation(myInvite.id);
+      // After accepting, reload as myTournament
+      const data = await getMyTournament(id);
+      setTournament(data);
+      setHasAccess(true);
+      // Try to refresh leaderboard/scores
+      try {
+        const lb = await getLeaderboard(id);
+        const rows = Array.isArray(lb) ? lb : lb.items ?? [];
+        const me = rows.find((r) => r.user === user?.userId || r.userId === user?.userId || r.userEmail === user?.email);
+        if (me) setMyScore(me.points ?? 0);
+      } catch {}
+    } catch (err) {
+      setError(err?.message || 'Error al aceptar la invitación');
+    } finally {
+      setLoading(false);
+    }
+  }
+>>>>>>> main
 }

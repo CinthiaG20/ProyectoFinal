@@ -11,6 +11,10 @@ export default function TeamForm() {
 
   const { listTeams, createTeam, updateTeam } = useTeamsApi();
 
+<<<<<<< HEAD
+=======
+  const [team, setTeam] = useState(null);
+>>>>>>> main
   const [loading, setLoading] = useState(isEdit);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -25,8 +29,14 @@ export default function TeamForm() {
     async function loadTeams() {
       try {
         const teams = await listTeams();
+<<<<<<< HEAD
         const selected = teams.find((t) => t.id === id);
         if (selected) {
+=======
+        const selected = teams.find(t => t.id === id);
+        if (selected) {
+          setTeam(selected);
+>>>>>>> main
           setName(selected.name);
           setDescription(selected.description);
           setLogo(selected.logo || '');
@@ -67,6 +77,7 @@ export default function TeamForm() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="page-header">
         <div>
           <h2 className="page-title">
@@ -125,6 +136,42 @@ export default function TeamForm() {
           </div>
         </form>
       </div>
+=======
+      <h2>{isEdit ? 'Editar equipo' : 'Nuevo equipo'}</h2>
+      <p>
+        <Link to="/manager/teams">← Volver</Link>
+      </p>
+
+      <ErrorMessage message={error} />
+
+      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
+        <label>
+          Nombre
+          <input
+            required
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Descripción
+          <textarea
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          />
+        </label>
+
+        <label>
+          URL del logo
+          <input value={logo} onChange={e => setLogo(e.target.value)} />
+        </label>
+
+        <button disabled={submitting}>
+          {submitting ? 'Guardando…' : 'Guardar'}
+        </button>
+      </form>
+>>>>>>> main
     </div>
   );
 }

@@ -21,6 +21,7 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ push, remove }}>
       {children}
+<<<<<<< HEAD
       <div
         style={{
           position: 'fixed',
@@ -32,6 +33,9 @@ export function ToastProvider({ children }) {
           alignItems: 'flex-end',
         }}
       >
+=======
+      <div style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 9999 }}>
+>>>>>>> main
         {toasts.map((t) => (
           <Toast key={t.id} id={t.id} type={t.type} onClose={() => remove(t.id)}>
             {t.message}

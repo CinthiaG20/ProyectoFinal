@@ -20,6 +20,10 @@ export default function UserForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
+<<<<<<< HEAD
+=======
+  // Cargar usuario si es edición
+>>>>>>> main
   useEffect(() => {
     if (!isEdit) return;
 
@@ -51,6 +55,10 @@ export default function UserForm() {
         role,
       };
 
+<<<<<<< HEAD
+=======
+      // Solo enviamos contraseña si el usuario escribió algo
+>>>>>>> main
       if (password.trim()) {
         payload.password = password.trim();
       }
@@ -73,6 +81,7 @@ export default function UserForm() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="page-header">
         <div>
           <h2 className="page-title">
@@ -119,6 +128,46 @@ export default function UserForm() {
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className="field-input"
+=======
+      <h2>{isEdit ? 'Editar usuario' : 'Nuevo usuario'}</h2>
+
+      <p>
+        <Link to="/admin/users">← Volver al listado</Link>
+      </p>
+
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          maxWidth: '400px',
+          padding: '1rem',
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+        }}
+      >
+        <ErrorMessage message={error} />
+
+        <div style={{ marginBottom: '0.75rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: '100%', padding: '0.5rem' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '0.75rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+            Rol
+          </label>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            style={{ width: '100%', padding: '0.5rem' }}
+>>>>>>> main
           >
             {ROLE_OPTIONS.map((r) => (
               <option key={r} value={r}>
@@ -128,6 +177,7 @@ export default function UserForm() {
           </select>
         </div>
 
+<<<<<<< HEAD
         <div className="field">
           <label className="field-label" htmlFor="user-password">
             {isEdit ? 'Nueva contraseña (opcional)' : 'Contraseña'}
@@ -144,10 +194,27 @@ export default function UserForm() {
           {isEdit && (
             <small style={{ display: 'block', marginTop: '0.25rem', fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
               Deja vacio para mantener la contraseña actual
+=======
+        <div style={{ marginBottom: '0.75rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+            {isEdit ? 'Nueva contraseña (opcional)' : 'Contraseña'}
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ width: '100%', padding: '0.5rem' }}
+            {...(isEdit ? {} : { required: true })}
+          />
+          {isEdit && (
+            <small style={{ display: 'block', marginTop: '0.25rem' }}>
+              Dejá vacío para mantener la contraseña actual.
+>>>>>>> main
             </small>
           )}
         </div>
 
+<<<<<<< HEAD
         <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
           <button
             type="submit"
@@ -160,6 +227,22 @@ export default function UserForm() {
             Cancelar
           </Link>
         </div>
+=======
+        <button
+          type="submit"
+          disabled={submitting}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: '#2563eb',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          {submitting ? 'Guardando...' : 'Guardar'}
+        </button>
+>>>>>>> main
       </form>
     </div>
   );

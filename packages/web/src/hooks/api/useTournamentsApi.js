@@ -8,7 +8,11 @@ export function useTournamentsApi() {
     updateTournament: TournamentsApi.apiUpdateTournament,
     deleteTournament: TournamentsApi.apiDeleteTournament,
     inviteUserToTournament: TournamentsApi.apiInviteUserToTournament,
+<<<<<<< HEAD
     // Gambler 
+=======
+    // Gambler (current user)
+>>>>>>> main
     listMyTournaments: TournamentsApi.apiListMyTournaments,
     getMyTournament: TournamentsApi.apiGetMyTournament,
     listMyMatches: TournamentsApi.apiListMyMatches,

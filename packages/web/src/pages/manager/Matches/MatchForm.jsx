@@ -85,6 +85,7 @@ export default function MatchForm() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="page-header">
         <div>
           <h2 className="page-title">
@@ -130,11 +131,36 @@ export default function MatchForm() {
           >
             <option value="">Seleccionar</option>
             {tournaments.map((t) => (
+=======
+      <h2>{isEdit ? 'Editar partido' : 'Nuevo partido'}</h2>
+      <p>
+        <Link to="/manager/matches">← Volver</Link>
+      </p>
+
+      <ErrorMessage message={error} />
+
+      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
+        <label>
+          Nombre
+          <input required value={name} onChange={e => setName(e.target.value)} />
+        </label>
+
+        <label>
+          Torneo
+          <select
+            required
+            value={tournamentId}
+            onChange={e => setTournamentId(e.target.value)}
+          >
+            <option value="">Seleccionar</option>
+            {tournaments.map(t => (
+>>>>>>> main
               <option key={t.id} value={t.id}>
                 {t.name}
               </option>
             ))}
           </select>
+<<<<<<< HEAD
         </div>
 
         <div className="field">
@@ -150,11 +176,25 @@ export default function MatchForm() {
           >
             <option value="">Seleccionar</option>
             {teams.map((t) => (
+=======
+        </label>
+
+        <label>
+          Equipo A
+          <select
+            required
+            value={teamA}
+            onChange={e => setTeamA(e.target.value)}
+          >
+            <option value="">Seleccionar</option>
+            {teams.map(t => (
+>>>>>>> main
               <option key={t.id} value={t.id}>
                 {t.name}
               </option>
             ))}
           </select>
+<<<<<<< HEAD
         </div>
 
         <div className="field">
@@ -170,11 +210,25 @@ export default function MatchForm() {
           >
             <option value="">Seleccionar</option>
             {teams.map((t) => (
+=======
+        </label>
+
+        <label>
+          Equipo B
+          <select
+            required
+            value={teamB}
+            onChange={e => setTeamB(e.target.value)}
+          >
+            <option value="">Seleccionar</option>
+            {teams.map(t => (
+>>>>>>> main
               <option key={t.id} value={t.id}>
                 {t.name}
               </option>
             ))}
           </select>
+<<<<<<< HEAD
         </div>
 
         <div className="field">
@@ -203,6 +257,23 @@ export default function MatchForm() {
             Cancelar
           </Link>
         </div>
+=======
+        </label>
+
+        <label>
+          Fecha y hora
+          <input
+            type="datetime-local"
+            required
+            value={date}
+            onChange={e => setDate(e.target.value)}
+          />
+        </label>
+
+        <button disabled={submitting}>
+          {submitting ? 'Guardando…' : 'Guardar'}
+        </button>
+>>>>>>> main
       </form>
     </div>
   );

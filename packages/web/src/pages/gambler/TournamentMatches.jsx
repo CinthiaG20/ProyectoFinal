@@ -13,7 +13,11 @@ function isPast(dateString) {
 }
 
 export default function TournamentMatches() {
+<<<<<<< HEAD
   const { id } = useParams();
+=======
+  const { id } = useParams(); // tournamentId
+>>>>>>> main
   const { listMatchesByTournament } = useMatchesApi();
   const { getMyTournament, listMyMatches } = useTournamentsApi();
 
@@ -71,9 +75,15 @@ export default function TournamentMatches() {
       <ErrorMessage message={error} />
 
       <section style={{ marginBottom: '2rem' }}>
+<<<<<<< HEAD
         <h3>Proximos partidos</h3>
         {futureMatches.length === 0 ? (
           <p>No hay partidos futuros</p>
+=======
+        <h3>Próximos partidos</h3>
+        {futureMatches.length === 0 ? (
+          <p>No hay partidos futuros.</p>
+>>>>>>> main
         ) : (
           <ul>
             {futureMatches.map((m) => (
@@ -91,7 +101,11 @@ export default function TournamentMatches() {
       <section>
         <h3>Partidos jugados</h3>
         {pastMatches.length === 0 ? (
+<<<<<<< HEAD
           <p>No hay partidos jugados aun</p>
+=======
+          <p>No hay partidos jugados aún.</p>
+>>>>>>> main
         ) : (
           <ul>
             {pastMatches.map((m) => (

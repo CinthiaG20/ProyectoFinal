@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../../../components/ui/ErrorMessage.jsx';
 import Loading from '../../../components/ui/Loading.jsx';
+<<<<<<< HEAD
 import Table from '../../../components/ui/Table.jsx';
+=======
+>>>>>>> main
 import { useMatchesApi } from '../../../hooks/api/useMatchesApi.js';
 import { useTournamentsApi } from '../../../hooks/api/useTournamentsApi.js';
 
@@ -61,6 +64,7 @@ export default function MatchList() {
 
   return (
     <div>
+<<<<<<< HEAD
       <div className="page-header">
         <div>
           <h2 className="page-title">Partidos</h2>
@@ -96,10 +100,36 @@ export default function MatchList() {
             </option>
           ))}
         </select>
+=======
+      <h2>Partidos</h2>
+
+      <div style={{ marginBottom: '1rem' }}>
+        <label>
+          Torneo:{' '}
+          <select
+            value={selectedTournament}
+            onChange={e => setSelectedTournament(e.target.value)}
+          >
+            {tournaments.map(t => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button
+          style={{ marginLeft: '1rem' }}
+          onClick={() => navigate('/manager/matches/new')}
+        >
+          Nuevo partido
+        </button>
+>>>>>>> main
       </div>
 
       <ErrorMessage message={error} />
 
+<<<<<<< HEAD
       {matches.length === 0 ? (
         <div className="table-shell">
           <div className="table-empty">No hay partidos para el torneo seleccionado</div>
@@ -153,6 +183,42 @@ export default function MatchList() {
           </tbody>
         </Table>
       )}
+=======
+      <table style={{ width: '100%', background: '#fff' }}>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Equipos</th>
+            <th>Fecha</th>
+            <th>Resultado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {matches.map(m => (
+            <tr key={m.id}>
+              <td>{m.name}</td>
+              <td>
+                {m.teamA?.name} vs {m.teamB?.name}
+              </td>
+              <td>{m.date}</td>
+              <td>
+                {m.result
+                  ? `${m.result.goalsA} - ${m.result.goalsB}`
+                  : 'Pendiente'}
+              </td>
+              <td>
+                <Link to={`/manager/matches/${m.id}`}>Editar</Link>{' '}
+                |{' '}
+                <Link to={`/manager/matches/${m.id}/result`}>
+                  Cargar resultado
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+>>>>>>> main
     </div>
   );
 }
