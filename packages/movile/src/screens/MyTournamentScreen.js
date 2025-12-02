@@ -34,16 +34,6 @@ export default function TournamentScreen() {
     loadData();
   }, [id]);
 
-  const handleSavePronostico = async (matchId, homeScore, awayScore, equipo1Id, equipo2Id) => {
-    try {
-      await crear_actualizarPronostico(matchId, homeScore, awayScore, equipo1Id, equipo2Id);
-      Alert.alert('Éxito', 'Pronóstico guardado');
-      loadData();
-    } catch (error) {
-      console.error('Error guardando pronóstico:', error);
-      Alert.alert('Error', 'No se pudo guardar el pronóstico');
-    }
-  };
 
   const renderMatchItem = ({ item: match }) => {
     const miPronostico = gambles.find(g => g.match === match.id);
