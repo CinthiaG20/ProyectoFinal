@@ -11,6 +11,19 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
+  function normalizeUser(raw) {
+    if (!raw) return null;
+
+    const rolesValue = raw.roles ?? raw.role ?? '';
+    return {
+      ...raw,
+      roles: rolesValue,
+      role: typeof rolesValue === 'string' ? rolesValue.toUpperCase() : '',
+    };
+  }
+
+=======
   //
   // Normaliza usuario recibido desde el backend
   //
@@ -27,6 +40,7 @@ export function AuthProvider({ children }) {
   //
   // Cargar sesión desde localStorage
   //
+>>>>>>> main
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (!stored) {
@@ -43,15 +57,21 @@ export function AuthProvider({ children }) {
         setUser(normalized);
       }
     } catch {
+<<<<<<< HEAD
+=======
       /* Ignorar fallos */
+>>>>>>> main
     } finally {
       setLoading(false);
     }
   }, []);
 
+<<<<<<< HEAD
+=======
   //
   // LOGIN
   //
+>>>>>>> main
   async function login({ email, password }) {
     try {
       const data = await apiLogin({ email, password });
@@ -70,15 +90,24 @@ export function AuthProvider({ children }) {
 
       return { ...data, user: normalizedUser };
     } catch (err) {
+<<<<<<< HEAD
+      const message =
+        err?.payload?.error ||
+        (err instanceof Error ? err.message : String(err));
+=======
       // Backend errors from Backend.fetch include a `payload` with { error }
       const message = err?.payload?.error || (err instanceof Error ? err.message : String(err));
+>>>>>>> main
       throw new Error(message || 'Error al iniciar sesión');
     }
   }
 
+<<<<<<< HEAD
+=======
   //
   // LOGOUT
   //
+>>>>>>> main
   function logout() {
     setUser(null);
     setToken(null);
@@ -86,17 +115,25 @@ export function AuthProvider({ children }) {
     window.localStorage.removeItem(STORAGE_KEY);
   }
 
+<<<<<<< HEAD
+=======
   //
   // REFRESH USER (apiMe solo devuelve username → fusionar datos)
   //
+>>>>>>> main
   async function refreshUser() {
     if (!token) return null;
 
     let me;
     try {
+<<<<<<< HEAD
+      me = await apiMe();
+    } catch (err) {
+=======
       me = await apiMe(); // { username }
     } catch (err) {
       // No forzar fallo en la app si refresh falla; devolver null
+>>>>>>> main
       return null;
     }
 
@@ -108,13 +145,20 @@ export function AuthProvider({ children }) {
         username: me.username,
       };
 
+<<<<<<< HEAD
+=======
       // guardar actualizado en localStorage
+>>>>>>> main
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         window.localStorage.setItem(
           STORAGE_KEY,
+<<<<<<< HEAD
+          JSON.stringify({ ...parsed, user: updated })
+=======
           JSON.stringify({ ...parsed, user: updated }),
+>>>>>>> main
         );
       }
 
@@ -124,9 +168,12 @@ export function AuthProvider({ children }) {
     return me;
   }
 
+<<<<<<< HEAD
+=======
   //
   // Context value
   //
+>>>>>>> main
   const value = {
     user,
     token,

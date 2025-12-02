@@ -1,45 +1,69 @@
 import { backend } from '../client.js';
 
-// The backend exposes gambles endpoints under /me for gamblers.
-// Map frontend forecast operations to those routes.
+function mapGamble(g) {
+  if (!g) return null;
+  return {
+    id: g.id,
+    match: g.match,
+    goalsA: g.homeScore ?? g.goalsA ?? null,
+    goalsB: g.awayScore ?? g.goalsB ?? null,
+    userId: g.user ?? g.userId,
+    userEmail: g.userEmail,
+    points: g.points,
+    tournamentId: g.tournamentId ?? g.tournament,
+    dateCreated: g.dateCreated,
+    dateModified: g.dateModified,
+  };
+}
+
+function mapList(data) {
+  if (!data) return [];
+  const arr = Array.isArray(data) ? data : data.items ?? [];
+  return arr.map(mapGamble);
+}
 
 export async function apiCreateOrUpdateForecast(matchId, payload) {
-  // Backend expects { match, homeScore, awayScore } in PUT /api/me/gambles
+  const queryUrl = `/api/me/gambles?match=${encodeURIComponent(matchId)}`;
+  const existing = await backend.get(queryUrl);
+  const first = Array.isArray(existing) ? existing[0] ?? null : (existing.items ?? [])[0] ?? null;
   const body = { match: matchId, homeScore: payload.goalsA, awayScore: payload.goalsB };
-  return backend.put('/api/me/gambles', body);
+
+  if (first && first.id) {
+    await backend.patch(`/api/me/gambles/${first.id}`, { homeScore: payload.goalsA, awayScore: payload.goalsB });
+    return mapGamble({ ...first, homeScore: payload.goalsA, awayScore: payload.goalsB });
+  }
+
+  const created = await backend.put('/api/me/gambles', body);
+  return mapGamble(created);
 }
 
 export async function apiGetMyForecast(matchId) {
-  // Use query on /api/me/gambles to filter by match
   const url = `/api/me/gambles?match=${encodeURIComponent(matchId)}`;
   const data = await backend.get(url);
-  // backend returns an array; return first or null
-  if (Array.isArray(data)) return data[0] ?? null;
-  return data;
+  if (Array.isArray(data)) return mapGamble(data[0] ?? null);
+  const first = (data.items ?? [])[0] ?? null;
+  return mapGamble(first);
 }
 
 export async function apiListMyForecasts() {
-  // List all forecasts for current user
-  return backend.get('/api/me/gambles');
+  const data = await backend.get('/api/me/gambles');
+  return mapList(data);
 }
 
 export async function apiListForecasts(matchId, tournamentId) {
-  // To retrieve all users' forecasts for a match we call the tournament gambles
-  // endpoint and filter by match id. If tournamentId not provided, try /me/gambles?match=
   if (tournamentId) {
     const all = await backend.get(`/api/me/tournaments/${tournamentId}/gambles`);
-    if (Array.isArray(all)) return all.filter((g) => g.match === matchId);
-    return (all.items ?? []).filter((g) => g.match === matchId);
+    return mapList(all).filter((g) => g.match === matchId);
   }
   const byMatch = await backend.get(`/api/me/gambles?match=${encodeURIComponent(matchId)}`);
-  return Array.isArray(byMatch) ? byMatch : byMatch.items ?? [];
+  return mapList(byMatch);
 }
 
 export async function apiGetLeaderboard(tournamentId) {
-  // Gambler route: /api/me/tournaments/:id/ranking
   return backend.get(`/api/me/tournaments/${tournamentId}/ranking`);
 }
 
 export async function apiDeleteForecast(id) {
-  return backend.delete(`/api/me/gambles/${id}`);
+  await backend.delete(`/api/me/gambles/${id}`);
+  return { deleted: true };
 }

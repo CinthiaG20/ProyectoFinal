@@ -6,13 +6,29 @@ import {
   createAuthMiddleware,
   ensureApiKey,
   ensureParamId,
-  validateBody, validateQuery,
+  validateBody,
+  validateQuery,
 } from "./routerUtils";
 
-export default function teamRoutes(router: Router, teamService: TeamService, userService: UserService) {
-  const { ensureManagerUser } = createAuthMiddleware(userService);
-  router.put("/teams",
-    validateBody(teamSchema.pick({ title: true, description: true })),
+export default function teamRoutes(
+  router: Router,
+  teamService: TeamService,
+  userService: UserService
+) {
+  const { ensureGamblerUser, ensureManagerUser } =
+    createAuthMiddleware(userService);
+
+  router.put(
+    "/teams",
+    validateBody(
+      teamSchema
+        .pick({
+          title: true,
+          description: true,
+          logo: true,
+        })
+        .partial({ logo: true })
+    ),
     ensureApiKey,
     ensureManagerUser,
     async (_req: Request, res: Response) => {
@@ -23,13 +39,14 @@ export default function teamRoutes(router: Router, teamService: TeamService, use
       } catch (err) {
         res.status(400).json({ error: (err as Error).message });
       }
-    },
+    }
   );
 
-  router.get("/teams",
+  router.get(
+    "/teams",
     validateQuery(teamSchema.partial()),
     ensureApiKey,
-    ensureManagerUser,
+    ensureGamblerUser,
     async (_req: Request, res: Response) => {
       const { apiKey, parsedQuery } = res.locals;
       try {
@@ -38,13 +55,14 @@ export default function teamRoutes(router: Router, teamService: TeamService, use
       } catch (err) {
         res.status(500).json({ error: (err as Error).message });
       }
-    },
+    }
   );
 
-  router.get("/teams/:id",
+  router.get(
+    "/teams/:id",
     ensureParamId,
     ensureApiKey,
-    ensureManagerUser,
+    ensureGamblerUser,
     async (_req: Request, res: Response) => {
       const { apiKey, id } = res.locals;
       try {
@@ -53,12 +71,15 @@ export default function teamRoutes(router: Router, teamService: TeamService, use
       } catch (err) {
         res.status(404).json({ error: `Id ${id} not found` });
       }
-    },
+    }
   );
 
-  router.patch("/teams/:id",
+  router.patch(
+    "/teams/:id",
     ensureParamId,
-    validateBody(teamSchema.pick({ title: true, description: true }).partial()),
+    validateBody(
+      teamSchema.pick({ title: true, description: true, logo: true }).partial()
+    ),
     ensureApiKey,
     ensureManagerUser,
     async (_req: Request, res: Response) => {
@@ -72,10 +93,11 @@ export default function teamRoutes(router: Router, teamService: TeamService, use
       } catch (err) {
         res.status(400).json({ error: (err as Error).message });
       }
-    },
+    }
   );
 
-  router.delete("/teams/:id",
+  router.delete(
+    "/teams/:id",
     ensureParamId,
     ensureApiKey,
     ensureManagerUser,
@@ -90,6 +112,6 @@ export default function teamRoutes(router: Router, teamService: TeamService, use
       } catch (err) {
         res.status(400).json({ error: (err as Error).message });
       }
-    },
+    }
   );
 }
