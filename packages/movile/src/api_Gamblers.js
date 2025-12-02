@@ -80,7 +80,7 @@ export function crear_actualizarPronostico(match,homeScore,awayScore,idEquipo1,i
   });
 
   const requestOptions = {
-    method: "PUT",
+    method: "POST",
     headers: myHeaders,
     body: raw,
     redirect: "follow"
