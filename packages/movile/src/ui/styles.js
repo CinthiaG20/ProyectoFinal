@@ -109,4 +109,28 @@ export const styles = StyleSheet.create({
     marginTop: 40,
     fontSize: 14,
   },
+  card: {
+  backgroundColor: '#0f172a',
+  borderRadius: 12,
+  padding: 14,
+  borderWidth: 1,
+  borderColor: '#1f2937',
+  marginBottom: 12,
+},
+cardTitle: {
+  fontSize: 16,
+  fontWeight: '600',
+  color: '#e5e7eb',
+  marginBottom: 4,
+},
+cardDesc: {
+  fontSize: 13,
+  color: '#9ca3af',
+  marginBottom: 8,
+},
+cardLink: {
+  fontSize: 14,
+  color: '#22c55e',
+  fontWeight: '500',
+},
 });

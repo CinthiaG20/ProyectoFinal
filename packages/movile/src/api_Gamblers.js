@@ -138,14 +138,14 @@ export function getInvitations(){//por confirmar
 }
 
 //funcion para aceptar invitaciones
-export function acceptInvitation(idTorneo,idInvitacion){//por confirmar
+export function acceptInvitation(idInvitacion){//por confirmar
   const myHeaders = new Headers();
   myHeaders.append("x-api-key", "default-db");
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer "+token);
 
   const raw = JSON.stringify({
-    tournament: idTorneo
+   // tournament: idTorneo
   });
 
   const requestOptions = {
@@ -165,14 +165,14 @@ export function acceptInvitation(idTorneo,idInvitacion){//por confirmar
 }
 
 //funcion para rechazar una invitacion
-export function rejectInvitation(idTorneo,idInvitacion){//por confirmar
+export function rejectInvitation(idInvitacion){//por confirmar
   const myHeaders = new Headers();
   myHeaders.append("x-api-key", "default-db");
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", "Bearer "+token);
 
   const raw = JSON.stringify({
-    tournament: idTorneo
+    //tournament: idTorneo
   });
 
   const requestOptions = {

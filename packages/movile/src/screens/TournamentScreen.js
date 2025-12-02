@@ -1,176 +1,117 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { getTournamentMatches, getTournamentGambles, postGamble } from '../api';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { getMyMaches, getMyGambles, crear_actualizarPronostico } from '../api_Gamblers';
 import { calculatePoints } from '../utils/score';
+import { styles } from '../ui/Styles';
 
 export default function TournamentScreen() {
   const route = useRoute();
+  const navigation = useNavigation();
   const { id, name } = route.params;
   const [matches, setMatches] = useState([]);
   const [gambles, setGambles] = useState([]);
-  const [savingIds, setSavingIds] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [m, g] = await Promise.all([
-          getTournamentMatches(id),
-          getTournamentGambles(id),
-        ]);
-        setMatches(m || []);
-        setGambles(g || []);
-      } catch (e) {
-        console.error('Error cargando torneo', e);
-      }
-    };
-    load();
-  }, [id]);
-
-  const myUserId = useMemo(() => {
-    const anyGamble = gambles[0];
-    return anyGamble?.user || null;
-  }, [gambles]);
-
-  const enhancedMatches = useMemo(() => {
-    return (matches || []).map(match => {
-      const gamblesForMatch = gambles.filter(g => g.match === match.id);
-      const myGamble = gamblesForMatch.find(g => g.user === myUserId) || null;
-
-      let myPoints = 0;
-      if (match.score && myGamble?.score) {
-        myPoints = calculatePoints(match.score, myGamble.score);
-      }
-
-      return {
-        ...match,
-        gambles: gamblesForMatch,
-        myGamble,
-        myPoints,
-      };
-    });
-  }, [matches, gambles, myUserId]);
-
-  const totalMyPoints = enhancedMatches.reduce(
-    (acc, m) => acc + (m.myPoints || 0),
-    0
-  );
-
-  const handleSave = async (match, localScore) => {
+  const loadData = async () => {
     try {
-      setSavingIds(prev => [...prev, match.id]);
-      await postGamble(match.id, localScore);
-      const updatedGambles = await getTournamentGambles(id);
-      setGambles(updatedGambles || []);
-    } catch (e) {
-      console.error('Error guardando pronóstico', e);
+      setLoading(true);
+      const [matchesData, gamblesData] = await Promise.all([
+        getMyMaches(id),
+        getMyGambles(id)
+      ]);
+      setMatches(matchesData || []);
+      setGambles(gamblesData || []);
+    } catch (error) {
+      console.error('Error cargando datos del torneo:', error);
+      Alert.alert('Error', 'No se pudieron cargar los datos del torneo');
     } finally {
-      setSavingIds(prev => prev.filter(x => x !== match.id));
+      setLoading(false);
     }
   };
 
-  const renderItem = ({ item: match }) => {
-    const isPlayed = !!match.score;
+  useEffect(() => {
+    loadData();
+  }, [id]);
 
-    const teamIds = match.teams || [];
-    const [team1, team2] = teamIds;
+  const handleSavePronostico = async (matchId, homeScore, awayScore, equipo1Id, equipo2Id) => {
+    try {
+      await crear_actualizarPronostico(matchId, homeScore, awayScore, equipo1Id, equipo2Id);
+      Alert.alert('Éxito', 'Pronóstico guardado');
+      loadData();
+    } catch (error) {
+      console.error('Error guardando pronóstico:', error);
+      Alert.alert('Error', 'No se pudo guardar el pronóstico');
+    }
+  };
 
-    const [localScore, setLocalScore] = useState(() => {
-      const initial = {};
-      teamIds.forEach(t => {
-        initial[t] = match.myGamble?.score?.[t] ?? 0;
-      });
-      return initial;
-    });
+  const renderMatchItem = ({ item: match }) => {
+    const miPronostico = gambles.find(g => g.match === match.id);
 
-    const updateScore = (teamId, value) => {
-      setLocalScore(prev => ({
-        ...prev,
-        [teamId]: Number(value) || 0,
-      }));
-    };
-
-    const saving = savingIds.includes(match.id);
+    const puntos = match.score && miPronostico?.score
+      ? calculatePoints(match.score, miPronostico.score)
+      : 0;
 
     return (
       <View style={styles.card}>
-        <Text style={styles.matchTitle}>{match.title}</Text>
-        <Text style={styles.matchDate}>
-          {new Date(match.date).toLocaleString()}
+        <Text style={styles.cardTitle}>{match.title}</Text>
+        <Text style={styles.cardDesc}>
+          {new Date(match.date).toLocaleDateString()}
         </Text>
 
-        {isPlayed && (
-          <Text style={styles.result}>
-            Resultado oficial: {match.score[team1]} - {match.score[team2]}
+        {match.score && (
+          <Text style={styles.info}>
+            Resultado: {match.score[match.homeTeam]} - {match.score[match.awayTeam]}
           </Text>
         )}
 
-        <View style={styles.row}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.sectionTitle}>Tu pronóstico</Text>
-            <View style={styles.scoreRow}>
-              {teamIds.map(t => (
-                <View key={t} style={styles.scoreItem}>
-                  <Text style={styles.teamLabel}>{t}</Text>
-                  <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                    defaultValue={String(localScore[t] ?? 0)}
-                    onChangeText={value => updateScore(t, value)}
-                  />
-                </View>
-              ))}
-            </View>
-            <TouchableOpacity
-              style={[styles.saveButton, saving && { opacity: 0.6 }]}
-              onPress={() => handleSave(match, localScore)}
-              disabled={saving}
-            >
-              <Text style={styles.saveButtonText}>
-                {saving ? 'Guardando...' : 'Guardar pronóstico'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+        {miPronostico && (
+          <Text style={styles.info}>
+            Tu pronóstico: {miPronostico.score[match.homeTeam]} - {miPronostico.score[match.awayTeam]}
+          </Text>
+        )}
 
-          {isPlayed && (
-            <View style={styles.pointsBox}>
-              <Text style={styles.pointsLabel}>Tus puntos</Text>
-              <Text style={styles.pointsValue}>{match.myPoints}</Text>
-            </View>
-          )}
-        </View>
+        {puntos > 0 && (
+          <Text style={styles.cardLink}>Puntos obtenidos: {puntos}</Text>
+        )}
 
-        {isPlayed && match.gambles?.length > 0 && (
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.sectionTitle}>Pronósticos de otros usuarios</Text>
-            {match.gambles.slice(0, 3).map(g => (
-              <Text key={g.id} style={styles.otherGamble}>
-                Usuario {g.user}: {g.score[team1]} - {g.score[team2]}
-              </Text>
-            ))}
-          </View>
+        {!match.score && (
+          <TouchableOpacity
+            style={[styles.button, { marginTop: 8 }]}
+            onPress={() => {
+              navigation.navigate('CreatePronostico', { match });
+            }}
+          >
+            <Text style={styles.buttonText}>Hacer pronóstico</Text>
+          </TouchableOpacity>
         )}
       </View>
     );
   };
 
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Cargando...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{name}</Text>
       <Text style={styles.subtitle}>
-        Gestioná tus pronósticos y mirá tus puntos en el torneo.
+        Partidos del torneo
       </Text>
 
-      <View style={styles.totalBox}>
-        <Text style={styles.totalLabel}>Puntos acumulados</Text>
-        <Text style={styles.totalValue}>{totalMyPoints}</Text>
-      </View>
-
       <FlatList
-        data={enhancedMatches}
+        data={matches}
         keyExtractor={item => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingVertical: 8 }}
+        renderItem={renderMatchItem}
+        contentContainerStyle={{ paddingVertical: 12 }}
+        ListEmptyComponent={
+          <Text style={styles.empty}>No hay partidos en este torneo.</Text>
+        }
       />
     </View>
   );
