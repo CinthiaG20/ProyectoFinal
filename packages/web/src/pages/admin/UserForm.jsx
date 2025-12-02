@@ -20,7 +20,6 @@ export default function UserForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Cargar usuario si es edición
   useEffect(() => {
     if (!isEdit) return;
 
@@ -52,7 +51,6 @@ export default function UserForm() {
         role,
       };
 
-      // Solo enviamos contraseña si el usuario escribió algo
       if (password.trim()) {
         payload.password = password.trim();
       }
@@ -75,44 +73,52 @@ export default function UserForm() {
 
   return (
     <div>
-      <h2>{isEdit ? 'Editar usuario' : 'Nuevo usuario'}</h2>
-
-      <p>
-        <Link to="/admin/users">← Volver al listado</Link>
-      </p>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">
+            {isEdit ? 'Editar usuario' : 'Nuevo usuario'}
+          </h2>
+          <p className="page-subtitle">
+            Completa los datos basicos y asigna el rol correspondiente
+          </p>
+        </div>
+        <div className="page-actions">
+          <Link to="/admin/users" className="btn btn-ghost">
+            ← Volver al listado
+          </Link>
+        </div>
+      </div>
 
       <form
         onSubmit={handleSubmit}
-        style={{
-          maxWidth: '400px',
-          padding: '1rem',
-          backgroundColor: '#fff',
-          borderRadius: '8px',
-        }}
+        style={{ maxWidth: 420 }}
       >
         <ErrorMessage message={error} />
 
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+        <div className="field">
+          <label className="field-label" htmlFor="user-email">
             Email
           </label>
           <input
+            id="user-email"
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem' }}
+            className="field-input"
           />
         </div>
 
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+        <div className="field">
+          <label className="field-label" htmlFor="user-role">
             Rol
           </label>
           <select
+            id="user-role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem' }}
+            className="field-input"
           >
             {ROLE_OPTIONS.map((r) => (
               <option key={r} value={r}>
@@ -122,38 +128,38 @@ export default function UserForm() {
           </select>
         </div>
 
-        <div style={{ marginBottom: '0.75rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+        <div className="field">
+          <label className="field-label" htmlFor="user-password">
             {isEdit ? 'Nueva contraseña (opcional)' : 'Contraseña'}
           </label>
           <input
+            id="user-password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem' }}
+            className="field-input"
+            autoComplete={isEdit ? 'new-password' : 'current-password'}
             {...(isEdit ? {} : { required: true })}
           />
           {isEdit && (
-            <small style={{ display: 'block', marginTop: '0.25rem' }}>
-              Dejá vacío para mantener la contraseña actual.
+            <small style={{ display: 'block', marginTop: '0.25rem', fontSize: '0.78rem', color: 'var(--color-text-muted)' }}>
+              Deja vacio para mantener la contraseña actual
             </small>
           )}
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#2563eb',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          {submitting ? 'Guardando...' : 'Guardar'}
-        </button>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn btn-primary"
+          >
+            {submitting ? 'Guardando...' : 'Guardar'}
+          </button>
+          <Link to="/admin/users" className="btn btn-ghost">
+            Cancelar
+          </Link>
+        </div>
       </form>
     </div>
   );

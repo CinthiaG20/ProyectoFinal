@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Link, useParams } from 'react-router-dom';
 import ErrorMessage from '../../components/ui/ErrorMessage.jsx';
 import Loading from '../../components/ui/Loading.jsx';
+import Table from '../../components/ui/Table.jsx';
 import { useForecastsApi } from '../../hooks/api/useForecastsApi.js';
 import { useMatchesApi } from '../../hooks/api/useMatchesApi.js';
 import ForecastForm from './ForecastForm.jsx';
@@ -32,6 +34,10 @@ export default function MatchDetail() {
     [match],
   );
 
+  const { search } = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(search), [search]);
+  const editRequested = searchParams.get('edit') === 'true';
+
   useEffect(() => {
     async function load() {
       setLoading(true);
@@ -50,7 +56,6 @@ export default function MatchDetail() {
     load();
   }, [id, getMatch]);
 
-  // Pronósticos de otros usuarios (solo en partidos pasados)
   useEffect(() => {
     if (!matchIsPast || !match?.id) return;
 
@@ -61,7 +66,7 @@ export default function MatchDetail() {
         const data = await listForecasts(match.id, match.tournamentId);
         setOtherForecasts(Array.isArray(data) ? data : data.items ?? []);
       } catch (e) {
-        setForecastError(e.message || 'Error al cargar pronósticos');
+        setForecastError(e.message || 'Error al cargar pronosticos');
       } finally {
         setLoadingForecasts(false);
       }
@@ -69,6 +74,30 @@ export default function MatchDetail() {
 
     loadForecasts();
   }, [matchIsPast, match, listForecasts]);
+
+  async function reloadMatch() {
+    try {
+      const m = await getMatch(id);
+      setMatch(m);
+      setTournamentId(m.tournamentId ?? null);
+    } catch (e) {
+      setError(e.message || 'Error al recargar partido');
+    }
+  }
+
+  async function reloadForecastsIfPast() {
+    if (!match?.id || !isPast(match.date)) return;
+    setLoadingForecasts(true);
+    setForecastError('');
+    try {
+      const data = await listForecasts(match.id, match.tournamentId);
+      setOtherForecasts(Array.isArray(data) ? data : data.items ?? []);
+    } catch (e) {
+      setForecastError(e.message || 'Error al cargar pronosticos');
+    } finally {
+      setLoadingForecasts(false);
+    }
+  }
 
   if (loading) return <Loading />;
 
@@ -78,52 +107,78 @@ export default function MatchDetail() {
 
   return (
     <div>
-      <h2>{match.name}</h2>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">{match.name}</h2>
+          <p className="page-subtitle">
+            {match.teamA?.name} vs {match.teamB?.name} · {match.date}
+          </p>
+        </div>
+        {tournamentId && (
+          <div className="page-actions">
+            <Link
+              to={`/gambler/tournaments/${tournamentId}/matches`}
+              className="btn btn-ghost"
+            >
+              ← Volver a partidos del torneo
+            </Link>
+          </div>
+        )}
+      </div>
 
-      {tournamentId && (
-        <p>
-          <Link to={`/gambler/tournaments/${tournamentId}/matches`}>
-            ← Volver a partidos del torneo
-          </Link>
-        </p>
-      )}
-
-      <p>
-        {match.teamA?.name} vs {match.teamB?.name}
-      </p>
-      <p>Fecha: {match.date}</p>
-
-      <section style={{ marginTop: '1rem' }}>
-        <h3>Resultado real</h3>
+      <section className="app-card" style={{ marginBottom: '1.25rem' }}>
+        <h3 className="page-subtitle" style={{ textTransform: 'uppercase', letterSpacing: '.08em' }}>
+          Resultado real
+        </h3>
         {match.result ? (
-          <p>
-            {match.result.goalsA} - {match.result.goalsB}
+          <p style={{ fontSize: '1.1rem', marginTop: '0.4rem' }}>
+            <strong>{match.teamA?.name}</strong> {match.result.goalsA} – {match.result.goalsB}{' '}
+            <strong>{match.teamB?.name}</strong>
           </p>
         ) : (
-          <p>Sin resultado cargado aún.</p>
+          <p className="table-cell-muted" style={{ marginTop: '0.3rem' }}>
+            Sin resultado cargado aun.
+          </p>
         )}
       </section>
 
-      {!matchIsPast && (
-        <section>
-          <ForecastForm match={match} onSaved={null} />
+      {(!matchIsPast || (editRequested && !match?.result)) && (
+        <section className="app-card">
+          <ForecastForm
+            match={match}
+            onSaved={async () => {
+              await reloadMatch();
+              await reloadForecastsIfPast();
+            }}
+          />
         </section>
       )}
 
       {matchIsPast && (
-        <section style={{ marginTop: '2rem' }}>
-          <h3>Pronósticos de otros jugadores</h3>
+        <section style={{ marginTop: '1.5rem' }}>
+          <h3 className="page-title" style={{ fontSize: '0.98rem' }}>
+            Pronosticos de otros jugadores
+          </h3>
+          <p className="page-subtitle" style={{ marginBottom: '0.75rem' }}>
+            Compara tu pronostico con el del resto de participantes
+          </p>
+
           <ErrorMessage message={forecastError} />
+
           {loadingForecasts ? (
-            <p>Cargando pronósticos...</p>
+            <div className="table-shell">
+              <div className="table-empty">Cargando pronosticos…</div>
+            </div>
           ) : otherForecasts.length === 0 ? (
-            <p>No hay pronósticos registrados.</p>
+            <div className="table-shell">
+              <div className="table-empty">No hay pronosticos registrados.</div>
+            </div>
           ) : (
-            <table style={{ width: '100%', background: '#fff' }}>
+            <Table>
               <thead>
                 <tr>
                   <th>Usuario</th>
-                  <th>Pronóstico</th>
+                  <th>Pronostico</th>
                   <th>Puntos obtenidos</th>
                 </tr>
               </thead>
@@ -131,14 +186,22 @@ export default function MatchDetail() {
                 {otherForecasts.map((f) => (
                   <tr key={f.id}>
                     <td>{f.userEmail ?? f.userId}</td>
-                    <td>
-                      {f.goalsA} - {f.goalsB}
+                    <td style={{ textAlign: 'center' }}>
+                      {f.goalsA} – {f.goalsB}
                     </td>
-                    <td>{f.points ?? '-'}</td>
+                    <td style={{ textAlign: 'right' }}>
+                      {typeof f.points === 'number' ? (
+                        <span className="table-badge table-badge-positive">
+                          {f.points} pts
+                        </span>
+                      ) : (
+                        <span className="table-cell-muted">-</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
           )}
         </section>
       )}

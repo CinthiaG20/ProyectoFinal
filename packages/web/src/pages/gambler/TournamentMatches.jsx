@@ -13,7 +13,7 @@ function isPast(dateString) {
 }
 
 export default function TournamentMatches() {
-  const { id } = useParams(); // tournamentId
+  const { id } = useParams();
   const { listMatchesByTournament } = useMatchesApi();
   const { getMyTournament, listMyMatches } = useTournamentsApi();
 
@@ -29,11 +29,11 @@ export default function TournamentMatches() {
       try {
         const [t, m] = await Promise.all([
           getMyTournament(id),
-          // prefer gambler-specific matches list when available
           listMyMatches(id).catch(() => listMatchesByTournament(id)),
         ]);
         setTournament(t);
-        setMatches(m);
+        const matchesList = Array.isArray(m) ? m : m?.items ?? [];
+        setMatches(matchesList);
       } catch (e) {
         setError(e.message || 'Error al cargar partidos');
       } finally {
@@ -42,7 +42,7 @@ export default function TournamentMatches() {
     }
 
     load();
-  }, [id, listMatchesByTournament, getTournament]);
+  }, [id, listMatchesByTournament, listMyMatches, getMyTournament]);
 
   const futureMatches = useMemo(
     () => matches.filter((m) => !isPast(m.date)),
@@ -71,9 +71,9 @@ export default function TournamentMatches() {
       <ErrorMessage message={error} />
 
       <section style={{ marginBottom: '2rem' }}>
-        <h3>Próximos partidos</h3>
+        <h3>Proximos partidos</h3>
         {futureMatches.length === 0 ? (
-          <p>No hay partidos futuros.</p>
+          <p>No hay partidos futuros</p>
         ) : (
           <ul>
             {futureMatches.map((m) => (
@@ -91,7 +91,7 @@ export default function TournamentMatches() {
       <section>
         <h3>Partidos jugados</h3>
         {pastMatches.length === 0 ? (
-          <p>No hay partidos jugados aún.</p>
+          <p>No hay partidos jugados aun</p>
         ) : (
           <ul>
             {pastMatches.map((m) => (

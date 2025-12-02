@@ -11,7 +11,6 @@ export default function TeamForm() {
 
   const { listTeams, createTeam, updateTeam } = useTeamsApi();
 
-  const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(isEdit);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -26,9 +25,8 @@ export default function TeamForm() {
     async function loadTeams() {
       try {
         const teams = await listTeams();
-        const selected = teams.find(t => t.id === id);
+        const selected = teams.find((t) => t.id === id);
         if (selected) {
-          setTeam(selected);
           setName(selected.name);
           setDescription(selected.description);
           setLogo(selected.logo || '');
@@ -69,40 +67,64 @@ export default function TeamForm() {
 
   return (
     <div>
-      <h2>{isEdit ? 'Editar equipo' : 'Nuevo equipo'}</h2>
-      <p>
-        <Link to="/manager/teams">← Volver</Link>
-      </p>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">
+            {isEdit ? 'Editar equipo' : 'Nuevo equipo'}
+          </h2>
+          <p className="page-subtitle">Información básica del equipo</p>
+        </div>
+        <div className="page-actions">
+          <Link to="/manager/teams" className="btn btn-ghost">
+            ← Volver
+          </Link>
+        </div>
+      </div>
 
       <ErrorMessage message={error} />
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
-        <label>
-          Nombre
-          <input
-            required
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-        </label>
+      <div className="app-card" style={{ maxWidth: 560 }}>
+        <form onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="field-label">Nombre</label>
+            <input
+              className="field-input"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-        <label>
-          Descripción
-          <textarea
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-        </label>
+          <div className="field">
+            <label className="field-label">Descripción</label>
+            <textarea
+              className="field-input"
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-        <label>
-          URL del logo
-          <input value={logo} onChange={e => setLogo(e.target.value)} />
-        </label>
+          <div className="field">
+            <label className="field-label">URL del logo</label>
+            <input
+              className="field-input"
+              value={logo}
+              onChange={(e) => setLogo(e.target.value)}
+              placeholder="https://..."
+            />
+          </div>
 
-        <button disabled={submitting}>
-          {submitting ? 'Guardando…' : 'Guardar'}
-        </button>
-      </form>
+          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+            <button className="btn btn-primary" disabled={submitting}>
+              {submitting ? 'Guardando…' : 'Guardar'}
+            </button>
+            <Link to="/manager/teams" className="btn btn-ghost">
+              Cancelar
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

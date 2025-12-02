@@ -6,4 +6,3 @@ export * as TournamentsApi from './endpoints/tournaments.js';
 export * as UsersApi from './endpoints/users.js';
 
 export { backend } from './client.js';
-

@@ -5,6 +5,7 @@ export function useForecastsApi() {
     createOrUpdateForecast: ForecastsApi.apiCreateOrUpdateForecast,
     getMyForecast: ForecastsApi.apiGetMyForecast,
     listForecasts: ForecastsApi.apiListForecasts,
+    listMyForecasts: ForecastsApi.apiListMyForecasts,
     getLeaderboard: ForecastsApi.apiGetLeaderboard,
     deleteForecast: ForecastsApi.apiDeleteForecast,
   };

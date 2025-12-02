@@ -81,7 +81,7 @@ export default function TournamentForm() {
         </div>
 
         <div style={fieldStyle}>
-          <label>Descripción</label>
+          <label>Descripcion</label>
           <textarea
             value={description}
             onChange={e => setDescription(e.target.value)}

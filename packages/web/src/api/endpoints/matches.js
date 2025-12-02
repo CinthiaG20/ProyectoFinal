@@ -17,5 +17,6 @@ export async function apiUpdateMatch(id, payload) {
 }
 
 export async function apiSetMatchResult(id, payload) {
-  return backend.post(`/api/matches/${id}/result`, payload);
+  const body = { goalsA: payload.goalsA ?? payload.homeScore, goalsB: payload.goalsB ?? payload.awayScore };
+  return backend.post(`/api/matches/${id}/result`, body);
 }

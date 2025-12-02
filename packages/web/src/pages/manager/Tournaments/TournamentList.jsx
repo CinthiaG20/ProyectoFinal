@@ -17,7 +17,7 @@ export default function TournamentList() {
     setLoading(true);
     try {
       const data = await listTournaments();
-      setTournaments(Array.isArray(data) ? data : data.items ?? []);
+      setTournaments(Array.isArray(data) ? data : (data.items ?? []));
     } catch (e) {
       setError(e.message);
     } finally {
@@ -35,7 +35,7 @@ export default function TournamentList() {
     setError('');
     try {
       await deleteTournament(id);
-      setTournaments(prev => prev.filter(t => t.id !== id));
+      setTournaments((prev) => prev.filter((t) => t.id !== id));
     } catch (e) {
       setError(e.message);
     } finally {
@@ -47,73 +47,76 @@ export default function TournamentList() {
 
   return (
     <div>
-      <h2>Torneos</h2>
-      
-      <div style={{ marginBottom: '1rem' }}>
-        <button onClick={() => navigate('/manager/tournaments/new')}>
-          Nuevo torneo
-        </button>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">Torneos</h2>
+          <p className="page-subtitle">Listado de torneos disponibles</p>
+        </div>
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => navigate('/manager/tournaments/new')}
+          >
+            Nuevo torneo
+          </button>
+        </div>
       </div>
 
       <ErrorMessage message={error} />
 
       {tournaments.length === 0 ? (
-        <p>No hay torneos creados.</p>
+        <div className="table-shell">
+          <div className="table-empty">No hay torneos creados.</div>
+        </div>
       ) : (
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>Nombre</th>
-              <th style={thStyle}>Fecha inicio</th>
-              <th style={thStyle}>Fecha fin</th>
-              <th style={thStyle}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tournaments.map(t => (
-              <tr key={t.id}>
-                <td style={tdStyle}>{t.id}</td>
-                <td style={tdStyle}>{t.name}</td>
-                <td style={tdStyle}>{t.startDate}</td>
-                <td style={tdStyle}>{t.endDate}</td>
-                <td style={tdStyle}>
-                  <Link to={`/manager/tournaments/${t.id}`}>Editar</Link>
-                  {' | '}
-                  <Link to={`/manager/tournaments/${t.id}/invites`}>
-                    Invitaciones
-                  </Link>
-                  {' | '}
-                  <button
-                    onClick={() => handleDelete(t.id)}
-                    disabled={deletingId === t.id}
-                    style={{ marginLeft: '0.5rem' }}
-                  >
-                    {deletingId === t.id ? 'Eliminando…' : 'Eliminar'}
-                  </button>
-                </td>
+        <div className="table-shell">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tournaments.map((t) => (
+                <tr key={t.id}>
+                  <td>{t.id}</td>
+                  <td>{t.name}</td>
+                  <td className="table-cell-muted">{t.startDate}</td>
+                  <td className="table-cell-muted">{t.endDate}</td>
+                  <td>
+                    <Link
+                      to={`/manager/tournaments/${t.id}`}
+                      className="btn btn-ghost"
+                    >
+                      Editar
+                    </Link>
+                    <Link
+                      to={`/manager/tournaments/${t.id}/invites`}
+                      className="btn btn-ghost"
+                      style={{ marginLeft: 8 }}
+                    >
+                      Invitaciones
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(t.id)}
+                      disabled={deletingId === t.id}
+                      className="btn btn-ghost btn-ghost-danger"
+                      style={{ marginLeft: '0.5rem' }}
+                    >
+                      {deletingId === t.id ? 'Eliminando…' : 'Eliminar'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
 }
-
-const tableStyle = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  background: '#fff',
-};
-
-const thStyle = {
-  padding: '0.5rem',
-  borderBottom: '1px solid #ddd',
-  textAlign: 'left',
-};
-
-const tdStyle = {
-  padding: '0.5rem',
-  borderBottom: '1px solid #eee',
-};

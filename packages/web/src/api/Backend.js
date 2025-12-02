@@ -1,11 +1,10 @@
 export class Backend {
   constructor(config) {
-    this.apiKey = config.apiKey;           // puede ser un valor fijo
-    this.baseUrl = config.baseUrl ?? '';   // URL base del backend
+    this.apiKey = config.apiKey;           
+    this.baseUrl = config.baseUrl ?? '';   
     this.sessionToken = null;
   }
 
-<<<<<<< HEAD
   setSessionToken(token) {
     this.sessionToken = token || null;
   }
@@ -17,7 +16,7 @@ export class Backend {
 
     const finalHeaders = {
       'Content-Type': 'application/json',
-      'X-API-Key': this.apiKey,         // tu API no usa api key, pero debe existir
+      'X-API-Key': this.apiKey,         
       ...headers,
     };
 
@@ -26,10 +25,6 @@ export class Backend {
     }
 
     const response = await globalThis.fetch(input, {
-=======
-    const input = new URL(url, import.meta.env.VITE_API_BASE_URL ?? window.location.origin);
-    const request = await globalThis.fetch(input, {
->>>>>>> 5dc0b7f1f0bc25761d2b39b67f6b6e9f206abd05
       method,
       headers: finalHeaders,
       body: body ? JSON.stringify(body) : null,

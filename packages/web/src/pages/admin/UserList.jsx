@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../../components/ui/ErrorMessage.jsx';
 import Loading from '../../components/ui/Loading.jsx';
+import Table from '../../components/ui/Table.jsx';
 import { useUsersApi } from '../../hooks/api/useUsersApi.js';
 
 export default function UserList() {
@@ -32,7 +33,7 @@ export default function UserList() {
 
   async function handleDelete(id) {
     const confirm = window.confirm(
-      '¿Estás seguro de que querés eliminar este usuario?',
+      '¿Estas seguro de que quieres eliminar este usuario?',
     );
     if (!confirm) return;
 
@@ -52,67 +53,70 @@ export default function UserList() {
 
   return (
     <div>
-      <h2>Usuarios</h2>
-
-      <div style={{ marginBottom: '1rem' }}>
-        <button type="button" onClick={() => navigate('/admin/users/new')}>
-          Nuevo usuario
-        </button>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">Usuarios</h2>
+          <p className="page-subtitle">
+            Gestiona las cuentas que pueden acceder al sistema y sus roles.
+          </p>
+        </div>
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => navigate('/admin/users/new')}
+          >
+            Nuevo usuario
+          </button>
+        </div>
       </div>
 
       <ErrorMessage message={error} />
 
       {users.length === 0 ? (
-        <p>No hay usuarios registrados.</p>
+        <div className="table-shell">
+          <div className="table-empty">No hay usuarios registrados todavia.</div>
+        </div>
       ) : (
-        <table
-          style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            backgroundColor: '#fff',
-          }}
-        >
+        <Table>
           <thead>
             <tr>
-              <th style={thStyle}>ID</th>
-              <th style={thStyle}>Email</th>
-              <th style={thStyle}>Rol</th>
-              <th style={thStyle}>Acciones</th>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user.id}>
-                <td style={tdStyle}>{user.id}</td>
-                <td style={tdStyle}>{user.email}</td>
-                <td style={tdStyle}>{user.role}</td>
-                <td style={tdStyle}>
-                  <Link to={`/admin/users/${user.id}`}>Editar</Link>{' '}
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(user.id)}
-                    disabled={deletingId === user.id}
-                    style={{ marginLeft: '0.5rem' }}
-                  >
-                    {deletingId === user.id ? 'Eliminando...' : 'Eliminar'}
-                  </button>
+                <td className="table-cell-muted">{user.id}</td>
+                <td>{user.email}</td>
+                <td>
+                  <span className="table-badge">
+                    {user.role}
+                  </span>
+                </td>
+                <td>
+                  <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                    <Link to={`/admin/users/${user.id}`} className="btn btn-ghost">
+                      Editar
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(user.id)}
+                      disabled={deletingId === user.id}
+                      className="btn btn-ghost btn-ghost-danger"
+                    >
+                      {deletingId === user.id ? 'Eliminando…' : 'Eliminar'}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );
 }
-
-const thStyle = {
-  borderBottom: '1px solid #ddd',
-  padding: '0.5rem',
-  textAlign: 'left',
-};
-
-const tdStyle = {
-  borderBottom: '1px solid #eee',
-  padding: '0.5rem',
-};

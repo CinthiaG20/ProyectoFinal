@@ -11,22 +11,17 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  //
-  // Normaliza usuario recibido desde el backend
-  //
   function normalizeUser(raw) {
     if (!raw) return null;
 
+    const rolesValue = raw.roles ?? raw.role ?? '';
     return {
       ...raw,
-      roles: raw.roles,                 // backend: 'admin' | 'manager' | 'gambler'
-      role: raw.roles.toUpperCase(),    // frontend: 'ADMIN' | 'MANAGER' | 'GAMBLER'
+      roles: rolesValue,
+      role: typeof rolesValue === 'string' ? rolesValue.toUpperCase() : '',
     };
   }
 
-  //
-  // Cargar sesión desde localStorage
-  //
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (!stored) {
@@ -43,15 +38,11 @@ export function AuthProvider({ children }) {
         setUser(normalized);
       }
     } catch {
-      /* Ignorar fallos */
     } finally {
       setLoading(false);
     }
   }, []);
 
-  //
-  // LOGIN
-  //
   async function login({ email, password }) {
     try {
       const data = await apiLogin({ email, password });
@@ -70,15 +61,13 @@ export function AuthProvider({ children }) {
 
       return { ...data, user: normalizedUser };
     } catch (err) {
-      // Backend errors from Backend.fetch include a `payload` with { error }
-      const message = err?.payload?.error || (err instanceof Error ? err.message : String(err));
+      const message =
+        err?.payload?.error ||
+        (err instanceof Error ? err.message : String(err));
       throw new Error(message || 'Error al iniciar sesión');
     }
   }
 
-  //
-  // LOGOUT
-  //
   function logout() {
     setUser(null);
     setToken(null);
@@ -86,17 +75,13 @@ export function AuthProvider({ children }) {
     window.localStorage.removeItem(STORAGE_KEY);
   }
 
-  //
-  // REFRESH USER (apiMe solo devuelve username → fusionar datos)
-  //
   async function refreshUser() {
     if (!token) return null;
 
     let me;
     try {
-      me = await apiMe(); // { username }
+      me = await apiMe();
     } catch (err) {
-      // No forzar fallo en la app si refresh falla; devolver null
       return null;
     }
 
@@ -108,13 +93,12 @@ export function AuthProvider({ children }) {
         username: me.username,
       };
 
-      // guardar actualizado en localStorage
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         window.localStorage.setItem(
           STORAGE_KEY,
-          JSON.stringify({ ...parsed, user: updated }),
+          JSON.stringify({ ...parsed, user: updated })
         );
       }
 
@@ -124,9 +108,6 @@ export function AuthProvider({ children }) {
     return me;
   }
 
-  //
-  // Context value
-  //
   const value = {
     user,
     token,

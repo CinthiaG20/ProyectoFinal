@@ -59,42 +59,63 @@ export default function MatchResultForm() {
 
   return (
     <div>
-      <h2>Cargar resultado: {match.name}</h2>
-
-      <p>
-        <Link to="/manager/matches">← Volver</Link>
-      </p>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">Cargar resultado</h2>
+          <p className="page-subtitle">
+            {match.teamA?.name} vs {match.teamB?.name} · {match.date}
+          </p>
+        </div>
+        <div className="page-actions">
+          <Link to="/manager/matches" className="btn btn-ghost">
+            ← Volver
+          </Link>
+        </div>
+      </div>
 
       <ErrorMessage message={error} />
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: '300px' }}>
-        <p>
-          {match.teamA?.name} vs {match.teamB?.name}
-        </p>
-
-        <label>
-          Goles {match.teamA?.name}
+      <form onSubmit={handleSubmit} style={{ maxWidth: 320 }}>
+        <div className="field">
+          <label className="field-label" htmlFor="match-result-a">
+            Goles {match.teamA?.name}
+          </label>
           <input
+            id="match-result-a"
             type="number"
             required
             value={goalsA}
-            onChange={e => setGoalsA(e.target.value)}
+            onChange={(e) => setGoalsA(e.target.value)}
+            className="field-input"
           />
-        </label>
+        </div>
 
-        <label>
-          Goles {match.teamB?.name}
+        <div className="field">
+          <label className="field-label" htmlFor="match-result-b">
+            Goles {match.teamB?.name}
+          </label>
           <input
+            id="match-result-b"
             type="number"
             required
             value={goalsB}
-            onChange={e => setGoalsB(e.target.value)}
+            onChange={(e) => setGoalsB(e.target.value)}
+            className="field-input"
           />
-        </label>
+        </div>
 
-        <button disabled={submitting}>
-          {submitting ? 'Guardando…' : 'Guardar resultado'}
-        </button>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn btn-primary"
+          >
+            {submitting ? 'Guardando…' : 'Guardar resultado'}
+          </button>
+          <Link to="/manager/matches" className="btn btn-ghost">
+            Cancelar
+          </Link>
+        </div>
       </form>
     </div>
   );

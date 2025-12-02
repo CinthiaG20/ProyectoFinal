@@ -2,9 +2,11 @@ import Navbar from '../ui/Navbar.jsx';
 
 export default function AdminLayout({ children }) {
   return (
-    <div>
+    <div className="app-shell">
       <Navbar />
-      <main style={{ padding: '1.5rem' }}>{children}</main>
+      <main className="app-main">
+        <div className="app-card">{children}</div>
+      </main>
     </div>
   );
 }

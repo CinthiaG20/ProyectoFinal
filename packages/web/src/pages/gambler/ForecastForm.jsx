@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import ErrorMessage from '../../components/ui/ErrorMessage.jsx';
+import { useToast } from '../../components/ui/ToastContext.jsx';
 import { useForecastsApi } from '../../hooks/api/useForecastsApi.js';
 
 export default function ForecastForm({ match, onSaved }) {
   const matchId = match?.id;
-  const { getMyForecast, createOrUpdateForecast, deleteForecast } = useForecastsApi();
+  const { getMyForecast, createOrUpdateForecast, deleteForecast } =
+    useForecastsApi();
 
   const [goalsA, setGoalsA] = useState('');
   const [goalsB, setGoalsB] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const { push } = useToast();
 
   // Cargar pronóstico propio si existe
   useEffect(() => {
@@ -24,8 +27,6 @@ export default function ForecastForm({ match, onSaved }) {
           setGoalsA(data.goalsA?.toString() ?? '');
           setGoalsB(data.goalsB?.toString() ?? '');
         }
-      } catch (e) {
-        // Si 404 o similar, puede no haber pronóstico: lo ignoramos
       } finally {
         setLoading(false);
       }
@@ -39,13 +40,15 @@ export default function ForecastForm({ match, onSaved }) {
     setSubmitting(true);
     setError('');
     try {
-      await createOrUpdateForecast(matchId, {
+      const saved = await createOrUpdateForecast(matchId, {
         goalsA: Number(goalsA),
         goalsB: Number(goalsB),
       });
-      if (onSaved) onSaved();
+      push('Pronóstico guardado', { type: 'success' });
+      if (onSaved) onSaved(saved);
     } catch (e) {
       setError(e.message || 'Error al guardar pronóstico');
+      push(e.message || 'Error al guardar pronóstico', { type: 'error' });
     } finally {
       setSubmitting(false);
     }
@@ -62,61 +65,71 @@ export default function ForecastForm({ match, onSaved }) {
         await deleteForecast(id);
         setGoalsA('');
         setGoalsB('');
+        push('Pronóstico eliminado', { type: 'info' });
         if (onSaved) onSaved();
       }
     } catch (e) {
-      setError(e.message || 'Error al eliminar pronóstico');
+      setError(e.message || 'Error al eliminar pronostico');
+      push(e.message || 'Error al eliminar pronostico', { type: 'error' });
     } finally {
       setSubmitting(false);
     }
   }
 
-  if (loading) return <p>Cargando tu pronóstico...</p>;
+  if (loading)
+    return <p className="table-cell-muted">Cargando tu pronostico…</p>;
 
   return (
-    <div
-      style={{
-        border: '1px solid #ddd',
-        padding: '1rem',
-        borderRadius: '6px',
-        marginTop: '1rem',
-        background: '#fff',
-        maxWidth: '300px',
-      }}
-    >
-      <h4>Tu pronóstico</h4>
+    <div>
+      <h4
+        className="page-title"
+        style={{ fontSize: '0.98rem', marginBottom: '0.6rem' }}
+      >
+        Tu pronóstico
+      </h4>
       <ErrorMessage message={error} />
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '0.5rem' }}>
-          <label>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 340 }}>
+        <div className="field">
+          <label className="field-label" htmlFor="forecast-goals-a">
             Goles {match.teamA?.name}
-            <input
-              type="number"
-              required
-              value={goalsA}
-              onChange={(e) => setGoalsA(e.target.value)}
-              style={{ width: '100%' }}
-            />
           </label>
+          <input
+            id="forecast-goals-a"
+            type="number"
+            required
+            value={goalsA}
+            onChange={(e) => setGoalsA(e.target.value)}
+            className="field-input"
+          />
         </div>
-        <div style={{ marginBottom: '0.5rem' }}>
-          <label>
+        <div className="field">
+          <label className="field-label" htmlFor="forecast-goals-b">
             Goles {match.teamB?.name}
-            <input
-              type="number"
-              required
-              value={goalsB}
-              onChange={(e) => setGoalsB(e.target.value)}
-              style={{ width: '100%' }}
-            />
           </label>
+          <input
+            id="forecast-goals-b"
+            type="number"
+            required
+            value={goalsB}
+            onChange={(e) => setGoalsB(e.target.value)}
+            className="field-input"
+          />
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button type="submit" disabled={submitting}>
-            {submitting ? 'Guardando...' : 'Guardar pronóstico'}
+        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn btn-primary"
+          >
+            {submitting ? 'Guardando…' : 'Guardar pronóstico'}
           </button>
-          <button type="button" onClick={handleDelete} disabled={submitting || (!goalsA && !goalsB)} style={{ background: '#e11d48', color: '#fff' }}>
-            {submitting ? 'Procesando...' : 'Eliminar'}
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={submitting || (!goalsA && !goalsB)}
+            className="btn btn-ghost btn-ghost-danger"
+          >
+            {submitting ? 'Procesando…' : 'Eliminar'}
           </button>
         </div>
       </form>

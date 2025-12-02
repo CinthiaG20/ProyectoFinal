@@ -8,7 +8,6 @@ export default function RoleGuard({ allowedRoles }) {
     return <Navigate to="/login" replace />;
   }
 
-  // user.role está normalizado en mayúsculas por el AuthContext
   if (!allowedRoles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }

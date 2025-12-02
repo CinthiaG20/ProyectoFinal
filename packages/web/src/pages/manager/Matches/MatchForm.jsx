@@ -85,80 +85,124 @@ export default function MatchForm() {
 
   return (
     <div>
-      <h2>{isEdit ? 'Editar partido' : 'Nuevo partido'}</h2>
-      <p>
-        <Link to="/manager/matches">← Volver</Link>
-      </p>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">
+            {isEdit ? 'Editar partido' : 'Nuevo partido'}
+          </h2>
+          <p className="page-subtitle">
+            Define los equipos, torneo y fecha para este partido
+          </p>
+        </div>
+        <div className="page-actions">
+          <Link to="/manager/matches" className="btn btn-ghost">
+            ← Volver
+          </Link>
+        </div>
+      </div>
 
       <ErrorMessage message={error} />
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: '400px' }}>
-        <label>
-          Nombre
-          <input required value={name} onChange={e => setName(e.target.value)} />
-        </label>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 420 }}>
+        <div className="field">
+          <label className="field-label" htmlFor="match-name">
+            Nombre
+          </label>
+          <input
+            id="match-name"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="field-input"
+          />
+        </div>
 
-        <label>
-          Torneo
+        <div className="field">
+          <label className="field-label" htmlFor="match-tournament">
+            Torneo
+          </label>
           <select
+            id="match-tournament"
             required
             value={tournamentId}
-            onChange={e => setTournamentId(e.target.value)}
+            onChange={(e) => setTournamentId(e.target.value)}
+            className="field-input"
           >
             <option value="">Seleccionar</option>
-            {tournaments.map(t => (
+            {tournaments.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.name}
               </option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label>
-          Equipo A
+        <div className="field">
+          <label className="field-label" htmlFor="match-team-a">
+            Equipo A
+          </label>
           <select
+            id="match-team-a"
             required
             value={teamA}
-            onChange={e => setTeamA(e.target.value)}
+            onChange={(e) => setTeamA(e.target.value)}
+            className="field-input"
           >
             <option value="">Seleccionar</option>
-            {teams.map(t => (
+            {teams.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.name}
               </option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label>
-          Equipo B
+        <div className="field">
+          <label className="field-label" htmlFor="match-team-b">
+            Equipo B
+          </label>
           <select
+            id="match-team-b"
             required
             value={teamB}
-            onChange={e => setTeamB(e.target.value)}
+            onChange={(e) => setTeamB(e.target.value)}
+            className="field-input"
           >
             <option value="">Seleccionar</option>
-            {teams.map(t => (
+            {teams.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.name}
               </option>
             ))}
           </select>
-        </label>
+        </div>
 
-        <label>
-          Fecha y hora
+        <div className="field">
+          <label className="field-label" htmlFor="match-date">
+            Fecha y hora
+          </label>
           <input
+            id="match-date"
             type="datetime-local"
             required
             value={date}
-            onChange={e => setDate(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
+            className="field-input"
           />
-        </label>
+        </div>
 
-        <button disabled={submitting}>
-          {submitting ? 'Guardando…' : 'Guardar'}
-        </button>
+        <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn btn-primary"
+          >
+            {submitting ? 'Guardando…' : 'Guardar'}
+          </button>
+          <Link to="/manager/matches" className="btn btn-ghost">
+            Cancelar
+          </Link>
+        </div>
       </form>
     </div>
   );

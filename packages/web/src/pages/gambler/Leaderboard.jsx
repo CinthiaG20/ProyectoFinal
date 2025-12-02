@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ErrorMessage from '../../components/ui/ErrorMessage.jsx';
 import Loading from '../../components/ui/Loading.jsx';
+import Table from '../../components/ui/Table.jsx';
 import { useForecastsApi } from '../../hooks/api/useForecastsApi.js';
 import { useTournamentsApi } from '../../hooks/api/useTournamentsApi.js';
 
 export default function Leaderboard() {
-  const { id } = useParams(); // tournamentId
+  const { id } = useParams();
   const { getLeaderboard } = useForecastsApi();
   const { getMyTournament } = useTournamentsApi();
 
@@ -26,7 +27,7 @@ export default function Leaderboard() {
         ]);
 
         setTournament(t);
-        setRows(Array.isArray(lb) ? lb : lb.items ?? []);
+        setRows(Array.isArray(lb) ? lb : (lb.items ?? []));
       } catch (e) {
         setError(e.message || 'Error al cargar tabla de posiciones');
       } finally {
@@ -45,36 +46,54 @@ export default function Leaderboard() {
 
   return (
     <div>
-      <h2>Tabla de posiciones – {tournament.name}</h2>
-      <p>
-        <Link to={`/gambler/tournaments/${tournament.id}`}>
-          ← Volver al torneo
-        </Link>
-      </p>
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">Tabla de posiciones</h2>
+          <p className="page-subtitle">
+            {tournament.name} · {tournament.startDate} – {tournament.endDate}
+          </p>
+        </div>
+        <div className="page-actions">
+          <Link
+            to={`/gambler/tournaments/${tournament.id}`}
+            className="btn btn-ghost"
+          >
+            ← Volver al torneo
+          </Link>
+        </div>
+      </div>
 
       <ErrorMessage message={error} />
 
       {rows.length === 0 ? (
-        <p>No hay datos de puntuación aún.</p>
+        <div className="table-shell">
+          <div className="table-empty">No hay datos de puntuacion aun.</div>
+        </div>
       ) : (
-        <table style={{ width: '100%', background: '#fff' }}>
+        <Table>
           <thead>
             <tr>
-              <th>Posición</th>
-              <th>Usuario</th>
-              <th>Puntos</th>
+              <th style={{ textAlign: 'center', width: '10%' }}>Posicion</th>
+              <th style={{ textAlign: 'left' }}>Usuario</th>
+              <th style={{ textAlign: 'right', width: '20%' }}>Puntos</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r, index) => (
               <tr key={r.userId ?? r.user ?? index}>
-                <td>{r.rank ?? (index + 1)}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <span className="table-badge">{r.rank ?? index + 1}</span>
+                </td>
                 <td>{r.userEmail ?? r.userId}</td>
-                <td>{r.points}</td>
+                <td style={{ textAlign: 'right' }}>
+                  <span className="table-badge table-badge-positive">
+                    {r.points} pts
+                  </span>
+                </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );
