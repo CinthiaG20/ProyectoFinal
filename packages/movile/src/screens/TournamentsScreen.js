@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
-import { getTournament, logout } from '../api_Gamblers';
+import { MyTournaments, logout } from '../api_Gamblers';
 import { useAuth } from '../auth/AuthContext';
 import { styles } from '../ui/Styles';
 
@@ -14,7 +14,7 @@ export default function TournamentsScreen() {
 
   const loadData = async () => {
     try {
-      const data = await getTournament();
+      const data = await MyTournaments();
       setTournaments(data || []);
     } catch (e) {
       console.error('Error cargando torneos', e);
