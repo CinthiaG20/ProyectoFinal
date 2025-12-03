@@ -133,4 +133,45 @@ cardLink: {
   color: '#22c55e',
   fontWeight: '500',
 },
+sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#e5e7eb',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  info: {
+    fontSize: 14,
+    color: '#9ca3af',
+    marginBottom: 4,
+  },
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 12,
+  },
+  btn: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginHorizontal: 4,
+  },
+  accept: {
+    backgroundColor: '#22c55e',
+  },
+  reject: {
+    backgroundColor: '#ef4444',
+  },
+  btnText: {
+    color: '#020617',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  status: {
+    marginTop: 12,
+    fontSize: 14,
+    color: '#9ca3af',
+    fontWeight: '500',
+  },
 });

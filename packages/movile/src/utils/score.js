@@ -1,3 +1,4 @@
+import { styles } from '../ui/Styles';
 export function calculatePoints(realScore, predictedScore) {
   if (!realScore || !predictedScore) return 0;
 

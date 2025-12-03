@@ -121,7 +121,7 @@ export default function PartidosScreen() {
         onPress={() => {
           navigation.navigate('Tournament', {
             id: item.tournamentId,
-            name: item.tournamentName
+            name: item.tournamentName,
           });
         }}
       >

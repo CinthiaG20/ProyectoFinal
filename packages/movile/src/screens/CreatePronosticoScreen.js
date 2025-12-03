@@ -1,6 +1,6 @@
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { crear_actualizarPronostico } from '../api_Gamblers';
 import { styles } from '../ui/Styles';
 
@@ -12,6 +12,7 @@ export default function CreatePronosticoScreen() {
   const [homeScore, setHomeScore] = useState('');
   const [awayScore, setAwayScore] = useState('');
   const [loading, setLoading] = useState(false);
+  
 
   const handleSave = async () => {
     if (!homeScore || !awayScore) {
