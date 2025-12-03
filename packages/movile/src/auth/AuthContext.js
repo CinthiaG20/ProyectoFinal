@@ -9,7 +9,8 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        token
+        token,
+        singOut: () => {token ="";}
       }}
     >
       {children}

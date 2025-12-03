@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import nodePath from 'node:path';
-import { runServer } from './Server';
+import { runServer } from '../Server';
 
 function loggerFunction(...args: any[]) {
   console.log(...args);

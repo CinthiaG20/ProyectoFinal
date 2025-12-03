@@ -22,7 +22,7 @@ export const tournamentSchema = entitySchema.extend({
   beginning: z.coerce.date(),
   ending: z.coerce.date(),
 });
-  
+
 export const matchSchema = entitySchema.extend({
   title: z.string(),
   date: z.coerce.date(),
@@ -36,6 +36,7 @@ export const matchSchema = entitySchema.extend({
 export const teamSchema = entitySchema.extend({
   title: z.string(),
   description: z.string(),
+  logo: z.string().url().nullable(),
 });
 
 export const invitationSchema = entitySchema.extend({
@@ -54,7 +55,10 @@ export const gambleSchema = entitySchema.extend({
 });
 
 export const rankingSchema = z.object({
-  user: z.string(),
-  rank: z.number(),
+  user: z.object({
+    id: z.string(),
+    email: z.string().email(),
+  }),
+  rank: z.number().nullable(),
   points: z.number(),
 });

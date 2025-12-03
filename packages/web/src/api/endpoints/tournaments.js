@@ -26,7 +26,6 @@ export async function apiInviteUserToTournament(tournamentId, payload) {
   return backend.post(`/api/tournaments/${tournamentId}/invites`, payload);
 }
 
-// Gambler-specific endpoints (current user)
 export async function apiListMyTournaments() {
   return backend.get('/api/me/tournaments');
 }

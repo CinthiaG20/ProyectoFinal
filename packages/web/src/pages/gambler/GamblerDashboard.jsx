@@ -4,7 +4,11 @@ export default function GamblerDashboard() {
   return (
     <div>
       <h1>Panel del Jugador</h1>
+<<<<<<< HEAD
+      <p>Desde aquí puedes acceder a tus torneos y puntajes.</p>
+=======
       <p>Desde aquí podés acceder a tus torneos y puntajes.</p>
+>>>>>>> main
 
       <ul>
         <li>
