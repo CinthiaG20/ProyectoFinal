@@ -6,6 +6,8 @@ import MyGamblesScreen from '../screens/MyGamblesScreen';
 import TournamentsScreen from '../screens/TournamentsScreen';
 import InvitationsScreen from '../screens/InvitationsScreen';
 import PartidosScreen from '../screens/PartidosScreen';
+import MyTournamentsScreen from '../screens/MyTournamentScreen';
+import CreatePronosticoScreen from '../screens/CreatePronosticoScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +29,7 @@ export default function RootNavigator() {
         <Stack.Screen 
           name="MyGamblesScreen"  
           component={MyGamblesScreen}
-          options={{ title: 'Mis Pronósticos' }}
+          options={{ title: 'Home' }}
         />
         <Stack.Screen 
           name="TournamentsScreen"  
@@ -43,6 +45,16 @@ export default function RootNavigator() {
           name="PartidosScreen"  
           component={PartidosScreen}
           options={{ title: 'Mis partidos' }}
+        />
+        <Stack.Screen 
+          name="Tournament"  
+          component={MyTournamentsScreen}
+          options={{ title: 'Detalle del torneo' }}
+        />
+        <Stack.Screen 
+          name="CreatePronostico"  
+          component={CreatePronosticoScreen}
+          options={{ title: 'Crear pronóstico' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

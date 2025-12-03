@@ -1,48 +1,61 @@
+export let token = "";
+export let userId = "";
 
-export let token="";
-export let userId="";
-
-export function useLogin(email,pssword) {
+//funcion para loguarse
+export function useLogin(email, pssword) {
   const myHeaders = new Headers();
-myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("x-api-key", "default-db");
+  myHeaders.append("Content-Type", "application/json");
 
-const raw = JSON.stringify({
-  "email": email,
-  "password": pssword
-});
+  const raw = JSON.stringify({
+    "email": email,
+    "password": pssword
+  });
 
-const requestOptions = {
-  method: "POST",
-  headers: myHeaders,
-  body: raw,
-  redirect: "follow"
-};
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+  };
 
-return fetch(`http://192.168.43.212:3000/api/login`, requestOptions)
-  .then((response) => response.json())
-  .then((result) =>{token = result.token;id=result.userId;console.log(result.token)
-  })
-  .catch((error) => console.error(error));
+  return fetch(`http://192.168.43.212:3000/api/login`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      token = result.token;
+      userId = result.userId;
+      console.log(result); // mantengo console.log
+      return result;       // ahora retorna los datos
+    })
+    .catch((error) => console.error(error));
 }
-export function logout(){
-const myHeaders = new Headers();
-myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer " + token);
 
-const requestOptions = {
-  method: "POST",
-  headers: myHeaders,
-  body: JSON.stringify({}),
-  redirect: "follow"
-};
+//funcion para desloguearse
+export function logout() {
+  const myHeaders = new Headers();
+  myHeaders.append("x-api-key", "default-db");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
 
-return fetch("http://192.168.43.212:3000/api/logout", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({}),
+    redirect: "follow"
+  };
+
+  return fetch("http://192.168.43.212:3000/api/logout", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      token = "";
+      userId = "";
+      console.log(result); // console.log
+      return result;       // devuelve respuesta
+    })
+    .catch((error) => console.error(error));
 }
+
+//funcion para obtener los datos de un usuario
 export function getUser() {
   const myHeaders = new Headers();
   myHeaders.append("x-api-key", "default-db");
@@ -57,74 +70,85 @@ export function getUser() {
 
   return fetch("http://192.168.43.212:3000/api/me", requestOptions)
     .then((response) => response.json())
-    .then((result) => console.log(result))
+    .then((result) => {
+      console.log(result);
+      return result; // retorna datos
+    })
     .catch((error) => console.error(error));
 }
 
-export function listarUsuarios(){
+//funcion para listar todos los usuarios
+export function listarUsuarios() {
   const myHeaders = new Headers();
-myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer "+token);
+  myHeaders.append("x-api-key", "default-db");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
 
-const requestOptions = {
-  method: "GET",
-  headers: myHeaders,
-  redirect: "follow"
-};
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow"
+  };
 
-fetch("http://localhost:3000/api/users", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+  return fetch("http://192.168.43.212:3000/api/users", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      return result; // retorna datos
+    })
+    .catch((error) => console.error(error));
 }
 
-export function crearUsuario(email,pssword,role){ //por confirmar
+//funcion crear un usuario
+export function crearUsuario(email, pssword, role) { //por confirmar
   const myHeaders = new Headers();
-myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer "+token);
+  myHeaders.append("x-api-key", "default-db");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
 
-const raw = JSON.stringify({
-  "email": email,
-  "password": pssword,
-  "role": role
-});
+  const raw = JSON.stringify({
+    "email": email,
+    "password": pssword,
+    "role": role
+  });
 
-const requestOptions = {
-  method: "PUT",
-  headers: myHeaders,
-  body: raw,
-  redirect: "follow"
-};
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+  };
 
-fetch("http://192.168.43.212:3000/api/users", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+  return fetch("http://192.168.43.212:3000/api/users", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      return result; // retorna datos
+    })
+    .catch((error) => console.error(error));
 }
 
-export function borrarUsuario(id){ //por confirmar
+//funcion para borrar un usuario
+export function borrarUsuario(id) { //por confirmar
   const myHeaders = new Headers();
-myHeaders.append("x-api-key", "default-db");
-myHeaders.append("Content-Type", "application/json");
-myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWQiOiI2MTg0MjBiZi0wNTVlLTRhMmMtYmRlZS1iZTgzOTA0OTFiOGYiLCJ0b2tlblZlcnNpb24iOjgsImlhdCI6MTc2NDQ0NzI3MCwiZXhwIjoxNzY0NDU4MDcwfQ.jSZM8XTjzyPgT-CSoqbyYOqNfb7oPEQGmQfZ6nMVqPA");
+  myHeaders.append("x-api-key", "default-db");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
 
-const raw = JSON.stringify({
-  "email": email,
-  "password": pssword,
-  "role": role
-});
+  const raw = JSON.stringify({});
 
-const requestOptions = {
-  method: "DELETE",
-  headers: myHeaders,
-  body: raw,
-  redirect: "follow"
-};
+  const requestOptions = {
+    method: "DELETE",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+  };
 
-fetch(`http://192.168.43.212:3000/api/users/${id}`, requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+  return fetch(`http://192.168.43.212:3000/api/users/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      return result; // retorna datos
+    })
+    .catch((error) => console.error(error));
 }

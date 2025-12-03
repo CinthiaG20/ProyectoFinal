@@ -9,23 +9,23 @@ export default function MyGamblesScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mis pronósticos</Text>
+      <Text style={styles.title}>Home</Text>
       <View>
         <TouchableOpacity
           style={styles.button}
           onPress={() =>  navigation.navigate('TournamentsScreen')}
         >
-          <Text>torneos a los que tiene acceso</Text>
+          <Text>Torneos</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('PartidosScreen')}
         >
-          <Text>partidos a los que tiene acceso</Text>
+          <Text>Partidos</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('TournamentsScreen')}
+          onPress={() => navigation.navigate('InvitationScreen')}
         >
           <Text>Mis invitaciones </Text>
         </TouchableOpacity>
