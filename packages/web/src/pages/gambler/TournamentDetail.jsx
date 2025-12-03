@@ -26,17 +26,39 @@ export default function TournamentDetail() {
       setLoading(true);
       setError('');
       try {
+<<<<<<< HEAD
+=======
         // Try to get tournament as "my tournament" (accepted access)
+>>>>>>> main
         try {
           const data = await getMyTournament(id);
           setTournament(data);
           setHasAccess(true);
+<<<<<<< HEAD
+        } catch {
+=======
         } catch (err) {
           // If not present in my tournaments, try generic tournament info
+>>>>>>> main
           const data = await getTournament(id);
           setTournament(data);
           setHasAccess(false);
         }
+<<<<<<< HEAD
+
+        try {
+          const lb = await getLeaderboard(id);
+          const rows = Array.isArray(lb) ? lb : (lb.items ?? []);
+          const me = rows.find(
+            (r) =>
+              r.user === user?.userId ||
+              r.userId === user?.userId ||
+              r.userEmail === user?.email
+          );
+          if (me) setMyScore(me.points ?? 0);
+        } catch {
+          // Silently ignore leaderboard errors
+=======
         // Also try to fetch leaderboard and user's score
         try {
           const lb = await getLeaderboard(id);
@@ -45,6 +67,7 @@ export default function TournamentDetail() {
           if (me) setMyScore(me.points ?? 0);
         } catch (err) {
           // ignore leaderboard errors here
+>>>>>>> main
         }
       } catch (e) {
         setError(e.message || 'Error al cargar torneo');
@@ -61,6 +84,37 @@ export default function TournamentDetail() {
     setError('');
     try {
       const invites = await listInvitations();
+<<<<<<< HEAD
+      const list = Array.isArray(invites) ? invites : (invites.items ?? []);
+      const myInvite = list.find(
+        (i) => i.tournament === id && !i.acceptedAt && !i.revokedAt
+      );
+      if (!myInvite) {
+        setError('No hay invitacion pendiente para este torneo');
+        return;
+      }
+      await acceptInvitation(myInvite.id);
+
+      const data = await getMyTournament(id);
+      setTournament(data);
+      setHasAccess(true);
+
+      try {
+        const lb = await getLeaderboard(id);
+        const rows = Array.isArray(lb) ? lb : (lb.items ?? []);
+        const me = rows.find(
+          (r) =>
+            r.user === user?.userId ||
+            r.userId === user?.userId ||
+            r.userEmail === user?.email
+        );
+        if (me) setMyScore(me.points ?? 0);
+      } catch {
+        // Silently ignore leaderboard errors
+      }
+    } catch (err) {
+      setError(err?.message || 'Error al aceptar la invitacion');
+=======
       const list = Array.isArray(invites) ? invites : invites.items ?? [];
       const myInvite = list.find((i) => i.tournament === id && !i.acceptedAt && !i.revokedAt);
       if (!myInvite) {
@@ -81,6 +135,7 @@ export default function TournamentDetail() {
       } catch {}
     } catch (err) {
       setError(err?.message || 'Error al aceptar la invitación');
+>>>>>>> main
     } finally {
       setLoading(false);
     }
@@ -94,6 +149,75 @@ export default function TournamentDetail() {
 
   return (
     <div>
+<<<<<<< HEAD
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">{tournament.name}</h2>
+          <p className="page-subtitle">
+            {tournament.description || 'Torneo sin descripcion'}
+          </p>
+        </div>
+        <div className="page-actions">
+          <Link to="/gambler/tournaments" className="btn btn-ghost">
+            ← Volver a mis torneos
+          </Link>
+        </div>
+      </div>
+
+      <div className="app-card" style={{ marginBottom: '1rem' }}>
+        <p style={{ margin: 0, fontSize: '0.9rem' }}>
+          <strong>Fechas:</strong> {tournament.startDate} – {tournament.endDate}
+        </p>
+        {typeof myScore === 'number' && (
+          <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+            <strong>Tu puntaje:</strong>{' '}
+            <span className="table-badge table-badge-positive">
+              {myScore} pts
+            </span>
+          </p>
+        )}
+      </div>
+
+      {!hasAccess && (
+        <div
+          className="app-card"
+          style={{
+            marginBottom: '1rem',
+            backgroundColor: '#fff3cd',
+            borderColor: '#ffc107',
+          }}
+        >
+          <p style={{ margin: 0, fontSize: '0.9rem', color: '#856404' }}>
+            No tienes acceso a este torneo. Si tienes una invitación pendiente,
+            acéptala para ver los detalles.
+          </p>
+          <button
+            onClick={handleAcceptFromDetail}
+            className="btn btn-primary"
+            style={{ marginTop: '0.5rem' }}
+          >
+            Aceptar invitación
+          </button>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <Link
+          to={`/gambler/tournaments/${tournament.id}/matches`}
+          className="btn btn-primary"
+        >
+          Ver partidos
+        </Link>
+        <Link
+          to={`/gambler/tournaments/${tournament.id}/leaderboard`}
+          className="btn btn-ghost"
+        >
+          Ver tabla de posiciones
+        </Link>
+      </div>
+    </div>
+  );
+=======
       <h2>{tournament.name}</h2>
       <p>{tournament.description}</p>
       <p>
@@ -153,4 +277,5 @@ export default function TournamentDetail() {
       setLoading(false);
     }
   }
+>>>>>>> main
 }

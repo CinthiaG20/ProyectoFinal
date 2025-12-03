@@ -38,4 +38,28 @@ describe('Tournament Service', async () => {
     await apiClient.fetchOK(`${apiTournaments}/${createdTournament.id}`, { method: 'DELETE' });
     await apiClient.fetchFail(`${apiTournaments}/${createdTournament.id}`, {}, 404);
   });
+
+  test('a gambler user can access GET endpoints for tournaments', async () => {
+    const managerClient = new TestApiClient({ apiKey: TEST_DB_KEY });
+    await managerClient.login('manager@example.com', 'manager');
+
+    const createdTournament = await managerClient.create(apiTournaments, {
+      body: tournamentData,
+    });
+
+    const gamblerClient = new TestApiClient({ apiKey: TEST_DB_KEY });
+    await gamblerClient.login('gambler@example.com', 'gambler');
+
+    const tournaments = await gamblerClient.fetchOK(apiTournaments);
+    expect(Array.isArray(tournaments)).toBe(true);
+    expect(tournaments.length).toBeGreaterThan(0);
+
+    const fetchedTournament = await gamblerClient.fetchOK(`${apiTournaments}/${createdTournament.id}`);
+    expect(fetchedTournament).toEqual(createdTournament);
+
+    const matches = await gamblerClient.fetchOK(`${apiTournaments}/${createdTournament.id}/matches`);
+    expect(Array.isArray(matches)).toBe(true);
+
+    await managerClient.fetchOK(`${apiTournaments}/${createdTournament.id}`, { method: 'DELETE' });
+  });
 });

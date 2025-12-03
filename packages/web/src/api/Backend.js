@@ -1,7 +1,7 @@
 export class Backend {
   constructor(config) {
-    this.apiKey = config.apiKey;           // puede ser un valor fijo
-    this.baseUrl = config.baseUrl ?? '';   // URL base del backend
+    this.apiKey = config.apiKey;           
+    this.baseUrl = config.baseUrl ?? '';   
     this.sessionToken = null;
   }
 
@@ -16,7 +16,7 @@ export class Backend {
 
     const finalHeaders = {
       'Content-Type': 'application/json',
-      'X-API-Key': this.apiKey,         // tu API no usa api key, pero debe existir
+      'X-API-Key': this.apiKey,         
       ...headers,
     };
 

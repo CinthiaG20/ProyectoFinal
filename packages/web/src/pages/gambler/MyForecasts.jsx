@@ -81,31 +81,92 @@ export default function MyForecasts() {
 
   return (
     <div>
+<<<<<<< HEAD
+      <div className="page-header">
+        <div>
+          <h2 className="page-title">Mis pronosticos</h2>
+          <p className="page-subtitle">
+            Revisa tus pronosticos y accede rapidamente a cada partido
+          </p>
+        </div>
+        <div className="page-actions">
+          <Link to="/gambler" className="btn btn-ghost">
+            ← Inicio
+          </Link>
+        </div>
+      </div>
+      <ErrorMessage message={error} />
+
+      {forecasts.length === 0 ? (
+        <div className="table-shell">
+          <div className="table-empty">No tienes pronosticos todavia.</div>
+=======
       <h2>Mis pronósticos</h2>
       <ErrorMessage message={error} />
 
       {forecasts.length === 0 ? (
         <div style={{ padding: '1rem', background: '#fff', borderRadius: 6 }}>
           <p>No tenés pronósticos todavía.</p>
+>>>>>>> main
         </div>
       ) : (
         <Table>
           <thead>
             <tr>
+<<<<<<< HEAD
+              <th>Partido</th>
+              <th>Pronostico</th>
+              <th>Torneo</th>
+              <th>Acciones</th>
+=======
               <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Partido</th>
               <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Pronóstico</th>
               <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Torneo</th>
               <th style={{ padding: '0.5rem', borderBottom: '1px solid #eee' }}>Acción</th>
+>>>>>>> main
             </tr>
           </thead>
           <tbody>
             {forecasts.map((f) => (
+<<<<<<< HEAD
+              <tr key={f.id}>
+                <td>
+                  {(matchesMap[f.match]?.teamA?.name ?? f.match)} vs{' '}
+                  {(matchesMap[f.match]?.teamB?.name ?? '')}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {f.goalsA} – {f.goalsB}
+                </td>
+                <td>
+                  <span className="table-badge">
+                    {tournamentsMap[f.tournamentId]?.name ??
+                      tournamentsMap[f.tournament]?.name ??
+                      (f.tournamentId ?? f.tournament)}
+                  </span>
+                </td>
+                <td>
+                  <div style={{ display: 'flex', gap: '0.45rem', justifyContent: 'center' }}>
+                    <Link
+                      to={`/gambler/matches/${f.match}`}
+                      className="btn btn-ghost"
+                    >
+                      Ver partido
+                    </Link>
+                    <Link
+                      to={`/gambler/matches/${f.match}?edit=true`}
+                      className="btn btn-ghost"
+                    >
+                      Editar
+                    </Link>
+                  </div>
+=======
               <tr key={f.id} style={{ borderBottom: '1px solid #f6f6f6' }}>
                 <td style={{ padding: '0.5rem' }}>{(matchesMap[f.match]?.teamA?.name ?? f.match)} vs {(matchesMap[f.match]?.teamB?.name ?? '')}</td>
                 <td style={{ padding: '0.5rem' }}>{f.goalsA} - {f.goalsB}</td>
                 <td style={{ padding: '0.5rem' }}>{tournamentsMap[f.tournamentId]?.name ?? tournamentsMap[f.tournament]?.name ?? (f.tournamentId ?? f.tournament)}</td>
                 <td style={{ padding: '0.5rem' }}>
                   <Link to={`/gambler/matches/${f.match}`} style={{ color: '#2563eb' }}>Ver partido</Link>
+>>>>>>> main
                 </td>
               </tr>
             ))}
@@ -115,12 +176,41 @@ export default function MyForecasts() {
 
       {upcoming.length > 0 && (
         <div style={{ marginTop: '1.5rem' }}>
+<<<<<<< HEAD
+          <h3 className="page-title" style={{ fontSize: '0.96rem' }}>
+            Proximos partidos sin pronostico
+          </h3>
+          <p className="page-subtitle" style={{ marginBottom: '0.6rem' }}>
+            Aprovecha para completar tus pronosticos antes de que empiecen los partidos.
+          </p>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {upcoming.map((m) => (
+              <li
+                key={m.id}
+                style={{
+                  marginBottom: '0.45rem',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '0.75rem',
+                  alignItems: 'center',
+                  fontSize: '0.86rem',
+                }}
+              >
+                <span>
+                  <strong>{m.name}</strong> – {m.teamA?.name ?? 'Equipo A'} vs{' '}
+                  {m.teamB?.name ?? 'Equipo B'} ({m.date})
+                </span>
+                <Link to={`/gambler/matches/${m.id}`} className="btn btn-ghost">
+                  Hacer pronostico
+                </Link>
+=======
           <h3>Próximos partidos sin pronóstico</h3>
           <ul>
             {upcoming.map((m) => (
               <li key={m.id} style={{ marginBottom: '0.5rem' }}>
                 <strong>{m.name}</strong> – {m.teamA?.name ?? 'Equipo A'} vs {m.teamB?.name ?? 'Equipo B'} ({m.date}) {' '}
                 <Link to={`/gambler/matches/${m.id}`} style={{ color: '#2563eb' }}>Hacer pronóstico</Link>
+>>>>>>> main
               </li>
             ))}
           </ul>

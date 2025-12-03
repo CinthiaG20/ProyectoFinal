@@ -1,14 +1,23 @@
 {
+  "name": "@dwym-project-2025sem2/api",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "/usr/local/bin/ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "seed": "node seed-admin.js"
+  },
   "dependencies": {
     "@faker-js/faker": "^9.8.0",
     "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.4.6",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "expo": "^54.0.25",
     "express": "^4.17.1",
     "jsonwebtoken": "^9.0.2",
-    "sqlite3": "^5.0.2",
     "uuid": "^11.1.0",
     "zod": "^3.25.67"
   },
@@ -18,18 +27,9 @@
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^16.11.7",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.4.4",
+    "typescript": "^4.9.5",
     "vitest": "^3.2.3"
-  },
-  "license": "UNLICENSED",
-  "main": "src/app.ts",
-  "name": "@dwym-project-2025sem2/api",
-  "scripts": {
-    "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "test": "vitest"
-  },
-  "version": "0.1.0"
+  }
 }

@@ -2,4 +2,5 @@
 **/dist/
 **/.expo
 .env
-**/test/data/**/*.db
+**/data/**/*.db
+.DS_Store
